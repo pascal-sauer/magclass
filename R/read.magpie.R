@@ -73,9 +73,9 @@ read.magpie <- function(file_name, file_folder = "", file_type = NULL, # nolint:
     xdimnames <- lapply(x[datacols], function(x) return(as.character(unique(x))))
     xdimnames[[length(xdimnames) + 1]] <- colnames(x)[-datacols]
     names(xdimnames) <- NULL
-    tmparr <- array(NA, dim = sapply(xdimnames, length), dimnames = xdimnames) # nolint:undesirable_function_linter.
+    tmparr <- array(NA, dim = vapply(xdimnames, length, integer(1)), dimnames = xdimnames)
     for (i in xdimnames[[length(xdimnames)]]) {
-      j <- sapply(cbind(x[datacols], i), as.character) # nolint:undesirable_function_linter.
+      j <- vapply(cbind(x[datacols], i), as.character, character(nrow(x)))
       .duplicates_check(j)
       tmparr[j] <- x[, i]
     }

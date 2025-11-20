@@ -29,9 +29,9 @@ getDim <- function(elems, x, fullmatch = FALSE, dimCode = TRUE) {
   }
   tmpfun2 <- function(x, elems, fullmatch, dimCode) {
     if (fullmatch) {
-      tmp <- sapply(x, setequal, elems)
+      tmp <- vapply(x, setequal, logical(1), elems)
     } else {
-      tmp <- sapply(x, tmpfun, elems)
+      tmp <- vapply(x, tmpfun, logical(1), elems)
     }
     if (dimCode) names(tmp) <- 1:length(tmp)
     return(tmp)

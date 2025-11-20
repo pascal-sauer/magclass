@@ -41,7 +41,7 @@ magpply <- function(X, FUN, MARGIN = NULL, DIM = NULL, ..., INTEGRATE = FALSE) {
   if (length(X) == 0) return(NULL)
   if (INTEGRATE) xIn <- X
   for (d in dim) getItems(X, dim = d, raw = TRUE) <- NULL
-  noNames <- which(sapply(dimnames(X), is.null)) # nolint
+  noNames <- which(vapply(dimnames(X), is.null, logical(1)))
   for (i in noNames) {
     getItems(X, dim = i) <- rep("dummy", dim(X)[i])
   }

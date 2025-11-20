@@ -129,7 +129,7 @@ mbind <- function(...) { #nolint
     output <- new("magpie", abind::abind(inputs, along = 1))
   } else {
     tmp <- function(x) return(length(getNames(x, fulldim = TRUE)))
-    tmp <- sapply(inputs, tmp) #nolint
+    tmp <- vapply(inputs, tmp, integer(1))
     if (length(unique(tmp)) > 1) warning("mbind most likely returned an erronous magpie object due to",
                                          " different numbers of data subdimensions in inputs!")
     output <- new("magpie", abind::abind(inputs, along = 3))

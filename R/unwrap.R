@@ -20,7 +20,7 @@ unwrap <- function(x, sep = NULL) {
   if (!is.magpie(x)) stop("Input is not a MAgPIE object. unwrap works only for MAgPIE objects")
   dim3 <- unname(getItems(x, dim = 3, split = TRUE))
   dim <- c(unname(dimnames(x)[1:2]), dim3)
-  ndim3 <- sapply(dim3, length)
+  ndim3 <- vapply(dim3, length, integer(1))
   if (length(ndim3) == 1 && ndim3 == 0) ndim3 <- dim(x)[3]
   ndim <- c(dim(x)[1:2], ndim3)
   if (anyDuplicated(as.data.table(getItems(x, dim = 3)))) stop("Malformed MAgPIE object. Duplicated names detected!")

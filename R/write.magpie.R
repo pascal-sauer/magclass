@@ -236,7 +236,7 @@ write.magpie <- function(x, # nolint: object_name_linter, cyclocomp_linter.
       saveRDS(object = x, file = filePath, ...)
     } else if (file_type == "cs3" || file_type == "cs3r") {
       if (file_type == "cs3r") dimnames(x)[[2]] <- sub("y", "", dimnames(x)[[2]])
-      if (dim(x)[3] != prod(sapply(getItems(x, dim = 3, split = TRUE), length))) { # nolint
+      if (dim(x)[3] != prod(vapply(getItems(x, dim = 3, split = TRUE), length, integer(1)))) {
         stop("Input data seems to be sparse but ", file_type, " does not support sparse data. Please use ",
              sub("3", "4", file_type), " instead!")
       }

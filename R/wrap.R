@@ -50,7 +50,7 @@ wrap <- function(x, map = list(NA), sep = ".") {
     map <- lapply(map, FUN = function(ii) match(ii, perm))
   }
   dim <- dim(x)
-  dim2 <- sapply(map, FUN = function(ii) prod(dim[ii]))
+  dim2 <- vapply(map, FUN = function(ii) prod(dim[ii]), numeric(1))
   dimnames <- dimnames(x)
 
   tmp_dn <- function(map, dimnames) {

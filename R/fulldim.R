@@ -16,7 +16,7 @@ fulldim <- function(x, sep = ".") { #nolint
   .Deprecated("getItems")
   if (!is.null(dimnames(x)[[3]])) {
     elemsplit <- strsplit(dimnames(x)[[3]], sep, fixed = TRUE)
-    tmp <- sapply(elemsplit, length) #nolint
+    tmp <- vapply(elemsplit, length, integer(1))
   } else {
     tmp <- 0
   }

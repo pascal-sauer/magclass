@@ -37,7 +37,7 @@ add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint
   items[[add]] <- rep(nm, each = dim(x)[maindim] / length(nm))
   reorder <- c(olddims[olddims < subdim], length(items), olddims[olddims >= subdim])
   items <- items[reorder]
-  items <- items[!sapply(items, is.null)] # nolint
+  items <- items[!vapply(items, is.null, logical(1))]
   getItems(x, dim = maindim, raw = TRUE) <- apply(as.data.frame(items), 1, paste, collapse = ".")
   getSets(x, fulldim = FALSE)[maindim] <- paste(names(items), collapse = ".")
   return(x)

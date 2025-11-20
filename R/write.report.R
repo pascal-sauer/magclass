@@ -64,7 +64,7 @@ write.report <- function(x, file = NULL, model = NULL, scenario = NULL, unit = N
     if (append) {
       # check header for consistency
       header <- read.table(file, nrows = 1, sep = ";", stringsAsFactors = FALSE)
-      years1 <- as.numeric(header[sapply(header, is.numeric)]) # nolint
+      years1 <- as.numeric(header[vapply(header, is.numeric, logical(1))])
       years2 <- as.numeric(colnames(x)[!is.na(suppressWarnings(as.numeric(colnames(x))))])
       union <- sort(union(years1, years2))
       addycols <- function(data, years) {

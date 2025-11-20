@@ -43,8 +43,10 @@ print.magpie <- function(x, drop = TRUE, reshape = FALSE, ...) {
     names(loop)    <- setdiff(names(dims), names(reshape))
 
     header         <- array(dim = 3)
-    names(header)  <- sapply(1:3, #nolint
-                             function(dim, i) paste(names(dim[round(dim) == i]), collapse = "."), dim = loop)
+    names(header)  <- vapply(1:3,
+                             function(dim, i) paste(names(dim[round(dim) == i]), collapse = "."),
+                             character(1),
+                             dim = loop)
 
 
     nestedLoop <- function(toPrint, missing, header) {

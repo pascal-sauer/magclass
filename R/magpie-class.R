@@ -152,7 +152,7 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
     df[1, ] <- escapeRegex(df[1, ])
   }
   if (nrow(df) > 1) {
-    df <- data.frame(sapply(df, escapeRegex)) # nolint: undesirable_function_linter.
+    df <- data.frame(lapply(df, escapeRegex))
   }
   dmissing <- which(!(1:maxdim %in% sdims))
   sdims <- c(sdims, dmissing)
