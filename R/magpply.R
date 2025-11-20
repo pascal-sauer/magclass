@@ -10,46 +10,63 @@
 #' excluding dimensions from the calculation and DIM including them.
 #' @param ... further parameters passed on to FUN
 #' @param INTEGRATE if TRUE, the output will be filled into an magpie object of the same dimensionality as X
-#'
 #' @return magpie object
+#'
 #' @author Jan Philipp Dietrich, Benjamin Leon Bodirsky
 #' @examples
-#'
 #' pop <- maxample("pop")
 #' magpply(pop, FUN = sum, MARGIN = 2)
 #' fourdim <- pop * setNames(pop, c("jkk", "lk"))
 #' magpply(fourdim, FUN = sum, MARGIN = c(1, 3.1))
 #' @export magpply
-
-magpply <- function(X, FUN, MARGIN = NULL, DIM = NULL, ..., INTEGRATE = FALSE) { # nolint
-  if (!is.magpie(X)) stop("Input is not a MAgPIE object!")
-  if (!is.null(MARGIN) && !is.null(DIM)) stop("Please specify either MARGIN or DIM, not both at the same time!")
-  if (!is.null(MARGIN)) {
-    # converting MARGIN to DIM
-    MARGIN <- dimCode(MARGIN, X) # nolint
-    DIM <- NULL # nolint
+magpply <- function( # nolint: cyclocomp_linter.
+  X, FUN, MARGIN = NULL, DIM = NULL, ..., INTEGRATE = FALSE # nolint: object_name_linter.
+) {
+  x <- X
+  margin <- MARGIN
+  dim <- DIM
+  if (!is.magpie(x)) {
+    stop("Input is not a MAgPIE object!")
+  }
+  if (!is.null(margin) && !is.null(dim)) {
+    stop("Please specify either MARGIN or DIM, not both at the same time!")
+  }
+  if (!is.null(margin)) {
+    # converting margin to dim
+    margin <- dimCode(margin, x)
+    dim <- NULL
     for (i in 1:3) {
-      if (!is.element(i, floor(MARGIN))) {
-        DIM <- c(DIM, i) # nolint
-      } else if (is.element(i, floor(MARGIN)) && !is.element(i, MARGIN)) {
-        DIM <- c(DIM, setdiff(i + seq_len(ndim(X, dim = i)) / 10, MARGIN)) # nolint
+      if (!is.element(i, floor(margin))) {
+        dim <- c(dim, i)
+      } else if (is.element(i, floor(margin)) && !is.element(i, margin)) {
+        dim <- c(dim, setdiff(i + seq_len(ndim(x, dim = i)) / 10, margin))
       }
     }
   }
-  dim <- sort(dimCode(DIM, X), decreasing = TRUE)
-  if (any(dim == 0)) stop("Invalid dimension(s) specified")
-  if (length(X) == 0) return(NULL)
-  if (INTEGRATE) xIn <- X
-  for (d in dim) getItems(X, dim = d, raw = TRUE) <- NULL
-  noNames <- which(vapply(dimnames(X), is.null, logical(1)))
-  for (i in noNames) {
-    getItems(X, dim = i) <- rep("dummy", dim(X)[i])
+  dim <- sort(dimCode(dim, x), decreasing = TRUE)
+  if (any(dim == 0)) {
+    stop("Invalid dimension(s) specified")
   }
-  xd <- as.data.frame.table(X)
+  if (length(x) == 0) {
+    return(NULL)
+  }
+  if (INTEGRATE) {
+    xIn <- x
+  }
+  for (d in dim) {
+    getItems(x, dim = d, raw = TRUE) <- NULL
+  }
+  noNames <- which(vapply(dimnames(x), is.null, logical(1)))
+  for (i in noNames) {
+    getItems(x, dim = i) <- rep("dummy", dim(x)[i])
+  }
+  xd <- as.data.frame.table(x)
   out <- new("magpie", tapply(xd[[4]], xd[1:3], FUN, ...))
   for (i in noNames) {
     getItems(out, dim = i) <- NULL
   }
-  if (INTEGRATE) out <- magpie_expand(out, xIn)
+  if (INTEGRATE) {
+    out <- magpie_expand(out, xIn)
+  }
   return(out)
 }
