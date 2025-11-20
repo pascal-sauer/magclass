@@ -18,11 +18,11 @@ A vector or \code{\link[=magclass]{magpie}} object, same as \code{x}.
 Replaces all instances of non-finite data (\code{NA}, \code{NaN}, \code{Inf}, and \code{-Inf}).
 }
 \examples{
-part  <- new.magpie(letters[1:3], years = 'y1995', names = 'foo')
-total <- new.magpie(letters[1:3], years = 'y1995', names = 'foo')
+part  <- new.magpie(letters[1:3], years = "y1995", names = "foo")
+total <- new.magpie(letters[1:3], years = "y1995", names = "foo")
 
-part[,,]  <- c(0, 1, 2)
-total[,,] <- c(0, 10, 10)
+part[, , ]  <- c(0, 1, 2)
+total[, , ] <- c(0, 10, 10)
 
 part / total
 

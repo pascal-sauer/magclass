@@ -44,9 +44,9 @@ to the already existing function setNames.
 }}
 \examples{
 
- a <- as.magpie(1)
- getYears(a)
- setYears(a,1995)
+a <- as.magpie(1)
+getYears(a)
+ setYears(a, 1995)
 
 }
 \seealso{

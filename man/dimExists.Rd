@@ -8,23 +8,22 @@ dimExists(dim, x, sep = ".")
 }
 \arguments{
 \item{dim}{A vector of dimension numbers or dimension names which should be
-checked for}
+checked for.}
 
 \item{x}{MAgPIE object in which the dimensions should be searched for.}
 
-\item{sep}{A character separating joined dimension names}
+\item{sep}{A character separating joined dimension names.}
 }
 \value{
-Boolean indicating whether dimension exists or not
+Boolean indicating whether the dimension exists or not.
 }
 \description{
-Function checks whether a dimension exsist in a
-MAgPIE objects
+This function checks whether a dimension given by name or number exists.
 }
 \examples{
 
 pop <- maxample("pop")
-dimExists(c("t","scenario","blablub"),pop)
+dimExists(c("t", "scenario", "blablub"), pop)
 
 }
 \seealso{

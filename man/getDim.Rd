@@ -27,11 +27,11 @@ Function which tries to detect the dimension to which the given elems belong
 }
 \examples{
 
- pop <- maxample("pop")
- getDim(c("AFR","CPA"),pop)
- getDim(c("AFR","CPA"),pop,fullmatch=TRUE)
- getDim(c("AFR","CPA"),pop,dimCode=FALSE)
- 
+pop <- maxample("pop")
+getDim(c("AFR", "CPA"), pop)
+ getDim(c("AFR", "CPA"), pop, fullmatch = TRUE)
+ getDim(c("AFR", "CPA"), pop, dimCode = FALSE)
+
 }
 \seealso{
 \code{\link{mcalc}},\code{\link{dimCode}}

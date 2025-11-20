@@ -50,8 +50,8 @@ This function copies attributes from one object and assigns them to another.
 \examples{
 
 from <- array(12)
-attr(from,"blablub") <- "I am an attribute!"
-attr(from,"blablub2") <- "I am another attribute!"
+attr(from, "blablub") <- "I am an attribute!"
+attr(from, "blablub2") <- "I am another attribute!"
 
 print(attributes(from))
 
