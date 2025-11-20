@@ -17,7 +17,7 @@
 #' # a <- read.magpie("example.mz")
 #' # getRegionList(a)
 #' @export
-getRegionList <- function(x) {
+getRegionList <- function(x) { # nolint: undesirable_function_linter.
   .Deprecated("getItems")
   return(factor(sub("\\..*$", "", dimnames(x)[[1]])))
 }
@@ -25,7 +25,7 @@ getRegionList <- function(x) {
 #' @describeIn getRegionList set region names
 #' @export
 `getRegionList<-` <- function(x, value) { # nolint
-  reg <- getRegionList(x)
+  reg <- getRegionList(x) # nolint: undesirable_function_linter.
   if (length(reg) != length(value)) stop("Lengths of RegionLists do not agree!")
   tmp <- sub("^.*\\.", "", dimnames(x)[[1]])
   dimnames(x)[[1]] <- paste(as.vector(value), tmp, sep = ".")

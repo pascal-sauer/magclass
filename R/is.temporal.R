@@ -14,6 +14,6 @@
 #' is.spatial(c("GLO", "AFR"))
 #'
 #' @export
-is.temporal <- function(x) {
+is.temporal <- function(x) { # nolint: object_name_linter.
   return(length(grep("^[a-z]?[0-9]{4}$", x)) == length(x))
 }

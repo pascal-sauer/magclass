@@ -1,8 +1,7 @@
 #' Lowpass Filter
 #'
 #' Filters high frequencies out of a time series. The filter
-#' has the structure x'(n) = (x(n-1)+2*x(n)+x(n+1))/4
-#'
+#' has the structure `x'(n) = (x(n-1)+2*x(n)+x(n+1))/4`
 #'
 #' @param x Vector of data points, that should be filtered or MAgPIE object
 #' @param i number of iterations the filter should be applied to the data
@@ -11,7 +10,7 @@
 #' \code{"start"} for fixing the starting point, \code{"end"} for fixing the
 #' ending point and \code{"both"} for fixing both ends of the data.
 #' @param altFilter set special filter rule to indexes defined in this
-#' parameter. The special filter has the structure x'(n) = (2*x(n)+x(n+1))/3
+#' parameter. Special filter structure: `x'(n) = (2*x(n)+x(n+1))/3`
 #' @param warn boolean deciding whether lowpass issues a warning for
 #' critical parameter choices or not
 #' @return The filtered data vector or MAgPIE object

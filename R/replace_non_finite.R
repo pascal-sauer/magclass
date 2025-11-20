@@ -23,7 +23,7 @@
 #'
 
 #' @export
-replace_non_finite <- function(x, replace = 0) {
+replace_non_finite <- function(x, replace = 0) { # nolint: object_name_linter.
   x[!is.finite(x)] <- replace
 
   return(x)

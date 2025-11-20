@@ -131,7 +131,7 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
     if (uglyFormat) raw <- raw[, -dim(raw)[2]]
 
     # rename from uppercase to lowercase
-    if (header & .trim(s[, 1]) == "MODEL") {
+    if (header && .trim(s[, 1]) == "MODEL") {
       names(raw)[1:5] <- defaultHeader[1:5]
     }
 
@@ -139,7 +139,9 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
       if (dim(raw)[2] == length(defaultHeader)) {
         warning("Header is missing. Years are being guessed based on structure!")
         dimnames(raw)[[2]] <- defaultHeader
-      } else stop("Cannot read report. No header given and report has not the standard size!")
+      } else {
+        stop("Cannot read report. No header given and report has not the standard size!")
+      }
     }
 
     output <- list()

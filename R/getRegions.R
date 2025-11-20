@@ -18,7 +18,7 @@
 #' # a <- read.magpie("example.mz")
 #' # getRegions(a)
 #' @export
-getRegions <- function(x) {
+getRegions <- function(x) { # nolint: undesirable_function_linter.
   return(getItems(x, dim = 1.1))
 }
 

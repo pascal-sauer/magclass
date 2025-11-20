@@ -53,23 +53,23 @@ wrap <- function(x, map = list(NA), sep = ".") {
   dim2 <- vapply(map, FUN = function(ii) prod(dim[ii]), numeric(1))
   dimnames <- dimnames(x)
 
-  tmp_dn <- function(map, dimnames) {
+  tmpdn <- function(map, dimnames) {
     dimnames2 <- list()
     nn <- NULL
-    for (dim in 1:length(map)) {
+    for (dim in seq_along(map)) {
       names <- NULL
       for (ii in map[[dim]]) {
         if (is.null(names)) {
           names <- dimnames[[ii]]
-          name_names <- names(dimnames)[ii]
+          nameNames <- names(dimnames)[ii]
         } else {
           names <- paste(names, rep(dimnames[[ii]], each = length(names)),
                          sep = sep)
-          name_names <- paste(name_names, names(dimnames)[ii], sep = sep)
+          nameNames <- paste(nameNames, names(dimnames)[ii], sep = sep)
         }
       }
       dimnames2[[dim]] <- names
-      nn <- c(nn, name_names)
+      nn <- c(nn, nameNames)
     }
     # Trick to set names even for NULL entries
     dimnames2[[dim + 1]] <- "fake"
@@ -79,7 +79,7 @@ wrap <- function(x, map = list(NA), sep = ".") {
   }
 
   dim(x) <- dim2
-  dimnames <- tmp_dn(map, dimnames)
+  dimnames <- tmpdn(map, dimnames)
   if (any(dim(x) == 0)) {
     dimnames[dim(x) == 0] <- NULL
   }

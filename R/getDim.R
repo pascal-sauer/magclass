@@ -33,13 +33,13 @@ getDim <- function(elems, x, fullmatch = FALSE, dimCode = TRUE) {
     } else {
       tmp <- vapply(x, tmpfun, logical(1), elems)
     }
-    if (dimCode) names(tmp) <- 1:length(tmp)
+    if (dimCode) names(tmp) <- seq_along(tmp)
     return(tmp)
   }
   tmp <- getItems(x, split = TRUE)
   tmp2 <- lapply(tmp, tmpfun2, elems, fullmatch, dimCode)
   if (dimCode) {
-    names(tmp2) <- 1:length(tmp2)
+    names(tmp2) <- seq_along(tmp2)
     tmp2 <- unlist(tmp2)
     out <- as.numeric(names(tmp2)[tmp2])
   } else {

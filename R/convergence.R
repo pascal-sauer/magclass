@@ -46,7 +46,7 @@ convergence <- function(origin, aim, start_year = NULL, end_year = NULL, # nolin
 
   if (!identical(dimnames(aim)[[1]], dimnames(origin)[[1]])) stop("regions have to be the same")
 
-  if (ndata(origin) != 1 & !identical(getNames(origin), getNames(aim))) {
+  if (ndata(origin) != 1 && !identical(getNames(origin), getNames(aim))) {
     stop("If there ist more than one name-column, dimnames have to be the same")
   }
 
