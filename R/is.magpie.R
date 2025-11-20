@@ -1,5 +1,5 @@
 #' @importFrom methods is
 #' @export
-is.magpie <- function(x){
-  return(is(x,"magpie"))
+is.magpie <- function(x) { # nolint: object_name_linter.
+  return(is(x, "magpie"))
 }

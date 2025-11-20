@@ -24,7 +24,7 @@ getRegions <- function(x) {
 
 #' @describeIn getRegions overwrite region names
 #' @export
-"getRegions<-" <- function(x, value) { #nolint
+`getRegions<-` <- function(x, value) { # nolint
   .Deprecated("getItems")
   getCells(x) <- value
   return(x)

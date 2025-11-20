@@ -44,7 +44,7 @@ getNames <- function(x, fulldim = FALSE, dim = NULL) {
 
 #' @describeIn getNames set names
 #' @export
-"getNames<-" <- function(x, dim = NULL, value) { # nolint
+`getNames<-` <- function(x, dim = NULL, value) { # nolint
   if (is.null(dim) && is.null(value) && dim(x)[3] > 1) stop("Cannot unset names!")
   return(setItems(x, dim = .convertDim(dim), value = value, raw = TRUE))
 }

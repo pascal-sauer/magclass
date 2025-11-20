@@ -28,9 +28,9 @@ clean_magpie <- function(x, what = "all", maindim = 1:3) { # nolint
 
   # remove cell numbers if data is actually regional
   if (is.element("cells", what) && ncells(x) == nregions(x)) {
-      items <- getItems(x, dim = 1.1, full = TRUE)
-      names(items) <- NULL
-      if (!is.null(items)) getItems(x, dim = 1) <- items
+    items <- getItems(x, dim = 1.1, full = TRUE)
+    names(items) <- NULL
+    if (!is.null(items)) getItems(x, dim = 1) <- items
   }
   # make sure that all dimensions have names
   if ("sets" %in% what) {

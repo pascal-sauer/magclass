@@ -22,7 +22,8 @@
 #' # to fix the starting point
 #' lowpass(c(0, 9, 1, 5, 14, 20, 6, 11, 0), i = 2, fix = "start")
 #' @export
-lowpass <- function(x, i = 1, fix = NULL, altFilter = NULL, warn = TRUE) { #nolint
+lowpass <- function(x, # nolint: cyclocomp_linter.
+                    i = 1, fix = NULL, altFilter = NULL, warn = TRUE) {
 
   if (!is.null(fix) && !(fix %in% c("start", "end", "both"))) {
     stop("Option \"", fix, "\" is not available for the \"fix\" argunemt!")

@@ -44,7 +44,7 @@ print.magpie <- function(x, drop = TRUE, reshape = FALSE, ...) {
 
     header         <- array(dim = 3)
     names(header)  <- sapply(1:3, #nolint
-                            function(dim, i) paste(names(dim[round(dim) == i]), collapse = "."), dim = loop)
+                             function(dim, i) paste(names(dim[round(dim) == i]), collapse = "."), dim = loop)
 
 
     nestedLoop <- function(toPrint, missing, header) {
@@ -64,7 +64,7 @@ print.magpie <- function(x, drop = TRUE, reshape = FALSE, ...) {
         } else {
           header[is.na(header)] <- " "
           writeLines(paste(paste(names(header), collapse = ", "), " = ",
-            paste(header,        collapse = ", ")), sep = "\n\n")
+                           paste(header,        collapse = ", ")), sep = "\n\n")
           writeLines(paste("\t", names(reshape[1])))
           print(reshape(subset(as.data.frame(toPrintReduced, rev = 2), select = c(names(reshape), ".value")),
                         timevar = names(reshape[1]), idvar = names(reshape[2]),

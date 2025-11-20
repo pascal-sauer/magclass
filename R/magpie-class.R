@@ -117,13 +117,17 @@
 
 setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
 
-.mselectDF <- function(x, df) { # nolint
-  if (is.null(names(dimnames(x)))) stop("Dimnames must have names in order to use mselect!")
+.mselectDF <- function(x, df) { # nolint: cyclocomp_linter.
+  if (is.null(names(dimnames(x)))) {
+    stop("Dimnames must have names in order to use mselect!")
+  }
 
   dims <- dimCode(names(df), x)
   dims[dims %in% 1:3] <- dims[dims %in% 1:3] + 0.1
 
-  if (all(dims == 0)) stop("None of the dimensions in the mapping could be found in the magpie object!")
+  if (all(dims == 0)) {
+    stop("None of the dimensions in the mapping could be found in the magpie object!")
+  }
   dfmissing <- NULL
   if (any(dims == 0)) {
     dfmissing <- df[dims == 0]
@@ -131,17 +135,25 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
     dims <- dims[dims > 0]
   }
 
-  if (anyDuplicated(dims)) stop('Dimension(s) "', paste(names(dims)[duplicated(dims)], collapse = '", "'),
-    '" appear(s) more than once in the given mapping!')
+  if (anyDuplicated(dims)) {
+    stop('Dimension(s) "', paste(names(dims)[duplicated(dims)], collapse = '", "'),
+         '" appear(s) more than once in the given mapping!')
+  }
 
   maindim <- unname(round(dims[1]))
-  if (any(round(dims) != maindim)) stop("Data.frame must only contain subdimensions with a shared main dimension.",
-    " Mixtures across main dimensions are not allowed!")
+  if (any(round(dims) != maindim)) {
+    stop("Data.frame must only contain subdimensions with a shared main dimension.",
+         " Mixtures across main dimensions are not allowed!")
+  }
 
   sdims <- as.integer(substring(dims, 3))
-  maxdim <- nchar(gsub("[^\\.]", "", names(dimnames(x))[maindim])) + 1 # nolint
-  if (nrow(df) == 1) df[1, ] <- escapeRegex(df[1, ])
-  if (nrow(df) > 1) df <- data.frame(sapply(df, escapeRegex)) # nolint
+  maxdim <- nchar(gsub("[^\\.]", "", names(dimnames(x))[maindim])) + 1
+  if (nrow(df) == 1) {
+    df[1, ] <- escapeRegex(df[1, ])
+  }
+  if (nrow(df) > 1) {
+    df <- data.frame(sapply(df, escapeRegex)) # nolint: undesirable_function_linter.
+  }
   dmissing <- which(!(1:maxdim %in% sdims))
   sdims <- c(sdims, dmissing)
   for (d in dmissing) df <- cbind(df, "[^\\.]*")
@@ -153,8 +165,12 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
       d[[dim]] <- "dummy"
       x <- new.magpie(d[[1]], d[[2]], d[[3]], sets = getSets(x, fulldim = FALSE))
     }
-    if (dim == 1) return(x[f, , ])
-    if (dim == 2) return(x[, f, ])
+    if (dim == 1) {
+      return(x[f, , ])
+    }
+    if (dim == 2) {
+      return(x[, f, ])
+    }
     return(x[, , f])
   }
   found <- lapply(search, grep, getItems(x, dim = maindim, full = TRUE), perl = TRUE)
@@ -169,14 +185,16 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
     }
     nameExtensions <- nameExtRaw[rep(seq_along(nameExtRaw), length)]
     getItems(x, dim = maindim, raw = TRUE) <- paste(getItems(x, dim = maindim, full = TRUE), nameExtensions,
-      sep = ".")
+                                                    sep = ".")
     names(dimnames(x))[maindim] <- paste(getSets(x, fulldim = FALSE)[maindim], paste(names(dfmissing), collapse = "."),
-      sep = ".")
+                                         sep = ".")
   }
   if (any(length == 0) && nrow(df) > 0) {
     rowExtensions <- gsub("\\.", ".", sub("[^\\.]*", "NA", sub("^\\^", "", sub("\\$$", "", search[length == 0])),
-      fixed = TRUE), fixed = TRUE)
-    if (!is.null(dfmissing)) rowExtensions <- paste(rowExtensions, nameExtRaw[length == 0], sep = ".")
+                                          fixed = TRUE), fixed = TRUE)
+    if (!is.null(dfmissing)) {
+      rowExtensions <- paste(rowExtensions, nameExtRaw[length == 0], sep = ".")
+    }
     elems <- rep(1, length(rowExtensions))
     ext <- .subset(x, elems, maindim)
     getItems(ext, dim = maindim, raw = TRUE) <- rowExtensions
@@ -184,14 +202,14 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
     x <- suppressWarnings(mbind(x, ext))
     if (!is.null(getOption("magclass.verbosity")) && getOption("magclass.verbosity") > 1) {
       message("NOTE (.mselectDF): The following elements were added to x as they appeared",
-        " in the mapping but not in x: ", paste0(rowExtensions, collapse = ", "),
-        " (values set to NA)\n")
+              " in the mapping but not in x: ", paste0(rowExtensions, collapse = ", "),
+              " (values set to NA)\n")
     }
   }
   return(x)
 }
 
-.dimextract <- function(x, i, dim, pmatch = FALSE, invert = FALSE) { # nolint
+.dimextract <- function(x, i, dim, pmatch = FALSE, invert = FALSE) { # nolint: cyclocomp_linter.
 
   if (is.magpie(i) && is.logical(i)) {
     # check whether input is a 1D magpie object
@@ -207,13 +225,23 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
       i <- magpie_expand(i, x)
     }
   }
-  if (is.factor(i)) i <- as.character(i)
-  if (invert && is.numeric(i)) i <- -i
-  if (!is.character(i) && !is.list(i)) return(i)
+  if (is.factor(i)) {
+    i <- as.character(i)
+  }
+  if (invert && is.numeric(i)) {
+    i <- -i
+  }
+  if (!is.character(i) && !is.list(i)) {
+    return(i)
+  }
 
-  if (length(i) == 0) return(NULL)
+  if (length(i) == 0) {
+    return(NULL)
+  }
   dimnames <- dimnames(x)[[dim]]
-  if (is.null(dimnames)) stop("Missing element names in dimensions ", dim, "!")
+  if (is.null(dimnames)) {
+    stop("Missing element names in dimensions ", dim, "!")
+  }
   .countdots <- function(i) {
     return(nchar(gsub("[^\\.]", "", i)))
   }
@@ -231,17 +259,21 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
       }
     } else {
       warning("Your dimnames in dim=", dim, " contain duplicates! This might lead to erronous results",
-        " and bad code performance. Please try to avoid duplicates in dimnames under all circumstances!")
+              " and bad code performance. Please try to avoid duplicates in dimnames under all circumstances!")
     }
   }
 
   pmatch1 <- ifelse(pmatch == TRUE | pmatch == "right", "[^.]*", "")
   pmatch2 <- ifelse(pmatch == TRUE | pmatch == "left", "[^.]*", "")
 
-  if (!is.list(i)) i <- list(i)
+  if (!is.list(i)) {
+    i <- list(i)
+  }
   elems <- seq_len(dim(x)[dim])
   if (!is.null(names(i))) {
-    if (is.null(names(dimnames(x))[dim])) stop("subdimension does not exist (missing set names)!")
+    if (is.null(names(dimnames(x))[dim])) {
+      stop("subdimension does not exist (missing set names)!")
+    }
     nameOrder <- strsplit(names(dimnames(x))[dim], ".", fixed = TRUE)[[1]]
     if (!all(names(i) %in% nameOrder)) {
       stop("subdimension does not exist (\"", paste(names(i)[!(names(i) %in% nameOrder)], collapse = "\", \""), "\")")
@@ -249,7 +281,9 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
   }
   k <- 1
   for (j in i) {
-    if (is.factor(j)) j <- as.character(j)
+    if (is.factor(j)) {
+      j <- as.character(j)
+    }
     if (!is.null(names(i))) {
       subdim <- which(nameOrder == names(i)[k])
       startpattern <- paste0("^", strrep("[^.]*\\.", subdim - 1))
@@ -257,12 +291,14 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
       startpattern <- "(^|\\.)"
     }
     tmp <- lapply(paste0(startpattern, pmatch1, escapeRegex(j), pmatch2, "(\\.|$)"),
-      grep, dimnames[elems], perl = TRUE)
+                  grep, dimnames[elems], perl = TRUE)
     if (any(vapply(tmp, length, length(tmp)) == 0)) {
       stop("subscript out of bounds (\"", paste(j[vapply(tmp, length, length(tmp)) == 0], collapse = "\", \""), "\")")
     }
     tmp <- unlist(tmp)
-    if (invert) tmp <- setdiff(seq_along(elems), tmp)
+    if (invert) {
+      tmp <- setdiff(seq_along(elems), tmp)
+    }
     elems <- elems[tmp]
     k <- k + 1
   }
@@ -277,7 +313,9 @@ setMethod("[", # nolint
       stop("unknown argument(s) supplied!")
     }
     if (!is.null(dim)) {
-      if (!is.element(dim, 1:3)) stop("Invalid dim selection (allowed: 1, 2 or 3)")
+      if (!is.element(dim, 1:3)) {
+        stop("Invalid dim selection (allowed: 1, 2 or 3)")
+      }
       if (!missing(j) || (!missing(k) && !is.null(k) && k != FALSE)) {
         stop("Only single dimension selection allowed when dim is set!")
       }
@@ -289,42 +327,58 @@ setMethod("[", # nolint
         return(x[, , i, drop = drop, pmatch = pmatch, invert = invert])
       }
     }
-    if (is.null(dim(x))) return(x@.Data[i])
+    if (is.null(dim(x))) {
+      return(x@.Data[i])
+    }
     if (!missing(i)) {
-      if (is.data.frame(i)) return(.mselectDF(x, i))
+      if (is.data.frame(i)) {
+        return(.mselectDF(x, i))
+      }
       i <- .dimextract(x, i, 1, pmatch = pmatch, invert = invert)
     }
     if (!missing(j)) {
       .addY <- function(j, n) {
-        if (is.list(j)) return(lapply(j, .addY, n))
-        if (is.numeric(j) && any(j > n)) return(paste("y", j, sep = ""))
+        if (is.list(j)) {
+          return(lapply(j, .addY, n))
+        }
+        if (is.numeric(j) && any(j > n)) {
+          return(paste("y", j, sep = ""))
+        }
         return(j)
       }
       j <- .addY(j, dim(x)[2])
-      if (is.null(j)) j <- seq_len(dim(x)[2])
+      if (is.null(j)) {
+        j <- seq_len(dim(x)[2])
+      }
       j <- .dimextract(x, j, 2, pmatch = pmatch, invert = invert)
     }
-    if (!missing(k)) k <- .dimextract(x, k, 3, pmatch = pmatch, invert = invert)
+    if (!missing(k)) {
+      k <- .dimextract(x, k, 3, pmatch = pmatch, invert = invert)
+    }
     # if [] contains only 1 argument, the number of elements in sys.call(-1)
     # is 3. This indicates that it is a vectorised call of the form x[i]
     if (length(sys.call(-1)) == 3) {
       return(x@.Data[i])
     }
     x@.Data <- x@.Data[i, j, k, drop = FALSE]
-    if (drop) x <- collapseNames(x)
+    if (drop) {
+      x <- collapseNames(x)
+    }
     return(x)
   }
 )
 
 #' @exportMethod [<-
-setMethod("[<-", # nolint
+setMethod("[<-", # nolint: cyclocomp_linter.
   signature(x = "magpie"),
   function(x, i, j, k, ..., pmatch = FALSE, dim = NULL, value) {
     if (...length() > 0) {
       stop("unknown argument(s) supplied!")
     }
     if (!is.null(dim)) {
-      if (!is.element(dim, 1:3)) stop("Invalid dim selection (allowed: 1, 2 or 3)")
+      if (!is.element(dim, 1:3)) {
+        stop("Invalid dim selection (allowed: 1, 2 or 3)")
+      }
       if (!missing(j) || (!missing(k) && !missing(value))) {
         stop("Only single dimension selection allowed when dim is set!")
       }
@@ -343,20 +397,32 @@ setMethod("[<-", # nolint
       return(tmp)
     }
     if (!missing(i)) {
-      if (is.factor(i)) i <- as.character(i)
-      if (is.character(i) || is.list(i)) i <- .dimextract(x, i, 1, pmatch = pmatch)
+      if (is.factor(i)) {
+        i <- as.character(i)
+      }
+      if (is.character(i) || is.list(i)) {
+        i <- .dimextract(x, i, 1, pmatch = pmatch)
+      }
     }
     if (!missing(j)) {
-      if (is.factor(j)) j <- as.character(j)
-      if (is.numeric(j) & any(j > dim(x)[2])) j <- paste("y", j, sep = "")
-      else if (is.null(j)) j <- seq_len(dim(x)[2])
-      else if ((is.character(j) || is.list(j)) && grepl(".", dimnames(x)[[2]][1], fixed = TRUE)) {
+      if (is.factor(j)) {
+        j <- as.character(j)
+      }
+      if (is.numeric(j) & any(j > dim(x)[2])) {
+        j <- paste("y", j, sep = "")
+      } else if (is.null(j)) {
+        j <- seq_len(dim(x)[2])
+      } else if ((is.character(j) || is.list(j)) && grepl(".", dimnames(x)[[2]][1], fixed = TRUE)) {
         j <- .dimextract(x, j, 2, pmatch = pmatch)
       }
     }
     if (!missing(k)) {
-      if (is.factor(k)) k <- as.character(k)
-      if (is.character(k) || is.list(k)) k <- .dimextract(x, k, 3, pmatch = pmatch)
+      if (is.factor(k)) {
+        k <- as.character(k)
+      }
+      if (is.character(k) || is.list(k)) {
+        k <- .dimextract(x, k, 3, pmatch = pmatch)
+      }
     }
     # if [] contains only 1 argument, the number of elements in sys.call(-1)
     # is 4. This indicates that it is a vectorised call of the form x[i] <- value
@@ -365,20 +431,18 @@ setMethod("[<-", # nolint
       return(x)
     }
     if (is.magpie(value)) {
-      if (missing(i)) ii <- seq_len(dim(x)[1]) else ii <- i
-      if (missing(j)) jj <- seq_len(dim(x)[2]) else jj <- j
-      if (missing(k)) kk <- seq_len(dim(x)[3]) else kk <- k
+      ii <- if (missing(i)) seq_len(dim(x)[1]) else i
+      jj <- if (missing(j)) seq_len(dim(x)[2]) else j
+      kk <- if (missing(k)) seq_len(dim(x)[3]) else k
       value <- magpie_expand(value, x[ii, jj, kk])
     } else if (length(value) != length(x@.Data[i, j, k]) && length(value) != 1) {
       # dangerous writing of value as order might be wrong!
       stop("Replacement does not work! Different replacement length!")
     } else if (length(value) != 1 && getOption("magclass.verbosity", default = 0) > 1) {
       message("NOTE ([<-): Dangerous replacement! As replacement value is not",
-        " an MAgPIE object name checking is deactivated!\n")
+              " an MAgPIE object name checking is deactivated!\n")
     }
     x@.Data[i, j, k] <- value
     return(x)
   }
 )
-
-.isFALSE <- function(x) return(is.logical(x) && length(x) == 1 && !is.na(x) && !x)

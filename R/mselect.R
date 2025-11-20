@@ -7,7 +7,7 @@
     search <- search[-(1:end)]
     subsearch <- paste0("(", paste(subsearch, collapse = "|"), ")")
     subsearch <- paste0("^", paste(rep("[^\\.]*\\.", where - 1), collapse = ""), subsearch,
-                     paste(rep("\\.[^\\.]*", ndim - where), collapse = ""), "$")
+                        paste(rep("\\.[^\\.]*", ndim - where), collapse = ""), "$")
     matches <- union(matches, grep(subsearch, names))
   }
   return(names[sort(matches)])
@@ -90,7 +90,7 @@ mselect <- function(x, ..., collapseNames = FALSE) {
 
 #' @describeIn mselect replace values in magpie object
 #' @export
-"mselect<-" <- function(x, ..., value) { # nolint
+`mselect<-` <- function(x, ..., value) { # nolint
   m <- .mselectCoords(x, ...)
   x[m$i, m$j, m$k] <- value
   return(x)

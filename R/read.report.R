@@ -73,7 +73,6 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
   .trim <- function(a) return(gsub("(^ +)|( +$)", "", as.character(a)))
 
   .returnMagpie <- function(tmp, scenario, model) {
-
     # replace weird degree symbol in tables
     tmp$Unit <- enc2utf8(tmp$Unit) # nolint
     tmp$Unit <- sub(pattern = "\U{00B0}C", replacement = "K", x = tmp$Unit, useBytes = TRUE) # nolint
@@ -101,13 +100,13 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
     regions[order(sub("GLO", "ZZZZZZGLO", regions))] <- dimnames(mag)[[1]]
     mag <- as.array(mag)
     coord <- cbind(regions[tmp$Region], rep(years, each = dim(tmp)[1]),
-      names[paste(tmp$Variable, " (", tmp$Unit, ")", sep = "")])
+                   names[paste(tmp$Variable, " (", tmp$Unit, ")", sep = "")])
     if (dim(coord)[1] > length(mag)) {
       duplicates <- duplicated(as.data.table(coord))
       warning("Duplicate entries found for model \"", model, "\" and scenario \"", scenario,
-        "\" and only the last entry found in the data will be used (duplicate entries: ",
-        paste(apply(rbind(NULL, unique(coord[duplicates, c(1, 3)])), 1, paste, collapse = "|"),
-          collapse = ", "), ")!")
+              "\" and only the last entry found in the data will be used (duplicate entries: ",
+              paste(apply(rbind(NULL, unique(coord[duplicates, c(1, 3)])), 1, paste, collapse = "|"),
+                    collapse = ", "), ")!")
     }
     # suppress warnings from potential NA conversions
     mag[coord] <- suppressWarnings(as.numeric(as.vector(as.matrix(tmp[, yearelems]))))
@@ -118,8 +117,8 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
 
   .readmif <- function(file) {
     defaultHeader <- c("Model", "Scenario", "Region", "Variable", "Unit", "X2005",
-      "X2010", "X2020", "X2030", "X2040", "X2050", "X2060", "X2070",
-      "X2080", "X2090", "X2100")
+                       "X2010", "X2020", "X2030", "X2040", "X2050", "X2060", "X2070",
+                       "X2080", "X2090", "X2100")
     # determine seperator
     s <- read.table(file, sep = ";", header = FALSE, nrows = 1, stringsAsFactors = FALSE)
     if (all(names(s) == "V1")) sep <- "," else sep <- ";"
@@ -140,8 +139,7 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
       if (dim(raw)[2] == length(defaultHeader)) {
         warning("Header is missing. Years are being guessed based on structure!")
         dimnames(raw)[[2]] <- defaultHeader
-      }
-      else stop("Cannot read report. No header given and report has not the standard size!")
+      } else stop("Cannot read report. No header given and report has not the standard size!")
     }
 
     output <- list()

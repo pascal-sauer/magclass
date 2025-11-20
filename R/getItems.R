@@ -76,7 +76,7 @@ getItems <- function(x, dim = NULL, split = FALSE, full = FALSE) { # nolint
 
 #' @describeIn getItems set dimension names
 #' @export
-"getItems<-" <- function(x, dim, full = NULL, maindim = NULL, raw = FALSE, value) { # nolint
+`getItems<-` <- function(x, dim, full = NULL, maindim = NULL, raw = FALSE, value) { # nolint
   if (!is.null(full) && !isTRUE(full)) stop("Currently only full = NULL or TRUE supported!")
   if (length(dim) > 1) stop("dim with length > 1 is currently not supported when setting items.")
   dc <- dimCode(dim, x)
@@ -147,7 +147,7 @@ getItems <- function(x, dim = NULL, split = FALSE, full = FALSE) { # nolint
     }
   } else {
     if (dc == maindim) {
-      if (.isFALSE(raw) && dim(x)[maindim] > 1) {
+      if (isFALSE(raw) && dim(x)[maindim] > 1) {
         stop("Cannot unset dimension names for dimensions with more than 1 element!")
       }
       if (maindim == 1) dimnames(x) <- c(d1 = list(NULL), dimnames(x)[2:3])

@@ -18,19 +18,19 @@
 
 
 setMethod("log",
-    signature(x = "magpie"),
-    function(x, base = exp(1)) {
-        x@.Data <- log(x@.Data, base = base)
-        return(x)
-    }
+  signature(x = "magpie"),
+  function(x, base = exp(1)) {
+    x@.Data <- log(x@.Data, base = base)
+    return(x)
+  }
 )
 
+# from R documentation: logb is a wrapper for log for compatibility with S
 #' @exportMethod logb
-
 setMethod("logb",
-          signature(x = "magpie"),
-          function(x, base = exp(1)) {
-            x@.Data <- log(x@.Data, base = base)
-            return(x)
-          }
+  signature(x = "magpie"),
+  function(x, base = exp(1)) {
+    x@.Data <- log(x@.Data, base = base)
+    return(x)
+  }
 )

@@ -1,4 +1,4 @@
-tidy2magpie <- function(x, spatial = NULL, temporal = NULL) { #nolint
+tidy2magpie <- function(x, spatial = NULL, temporal = NULL) { # nolint
   # assumption: dataframe format in which only the very last
   #             column contains values!
   if ("data.frame" %in% class(x)) {

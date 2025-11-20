@@ -25,7 +25,7 @@ unwrap <- function(x, sep = NULL) {
   ndim <- c(dim(x)[1:2], ndim3)
   if (anyDuplicated(as.data.table(getItems(x, dim = 3)))) stop("Malformed MAgPIE object. Duplicated names detected!")
   if (prod(ndim3) != dim(x)[3]) {
-     stop("MAgPIE object is sparse in 3rd dimension but needs to be complete in order to be unwrapped!")
+    stop("MAgPIE object is sparse in 3rd dimension but needs to be complete in order to be unwrapped!")
   }
   reorder <- dimnames(wrap(array(NA, ndim, dim), list(1, 2, NA), sep = "."))[[3]]
   if (!is.null(reorder)) x <- x[, , reorder]

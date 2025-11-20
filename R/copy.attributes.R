@@ -1,8 +1,8 @@
 #' Copy Attributes
-#' 
+#'
 #' This function copies attributes from one object and assigns them to another.
-#' 
-#' 
+#'
+#'
 #' @aliases copy.attributes copy.attributes<-
 #' @param from object from which the attributes should be taken
 #' @param value Same as "from" (object from which the attributes should be
@@ -17,29 +17,31 @@
 #' delete2, are just merged to one deletion vector.
 #' @author Jan Philipp Dietrich
 #' @examples
-#' 
+#'
 #' from <- array(12)
-#' attr(from,"blablub") <- "I am an attribute!"
-#' attr(from,"blablub2") <- "I am another attribute!"
-#' 
+#' attr(from, "blablub") <- "I am an attribute!"
+#' attr(from, "blablub2") <- "I am another attribute!"
+#'
 #' print(attributes(from))
-#' 
+#'
 #' to <- as.magpie(0)
 #' print(attributes(to))
-#' 
+#'
 #' copy.attributes(to) <- from
 #' print(attributes(to))
-#' 
+#'
 #' @export
-copy.attributes <- function(from,to,delete=c('names','row.names','class','dim','dimnames'),delete2=NULL) {
+copy.attributes <- function(from, # nolint: object_name_linter.
+                            to, delete = c("names", "row.names", "class", "dim", "dimnames"), delete2 = NULL) {
   a <- attributes(from)
-  a[c(delete,delete2)] <- NULL
-  attributes(to) <- c(attributes(to),a)
+  a[c(delete, delete2)] <- NULL
+  attributes(to) <- c(attributes(to), a)
   return(to)
 }
 
 #' @describeIn copy.attributes assign attributes from object "value"
 #' @export
-"copy.attributes<-" <- function(to,delete=c('names','row.names','class','dim','dimnames'),delete2=NULL,value) {
-  return(copy.attributes(from=value,to=to,delete=delete,delete2=delete2))
+`copy.attributes<-` <- function(to, # nolint: object_name_linter.
+                                delete = c("names", "row.names", "class", "dim", "dimnames"), delete2 = NULL, value) {
+  return(copy.attributes(from = value, to = to, delete = delete, delete2 = delete2))
 }

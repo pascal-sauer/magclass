@@ -1,8 +1,8 @@
 #' Has Coordinates
-#' 
+#'
 #' Checks, whether object contains coordinates.
-#' 
-#' 
+#'
+#'
 #' @param x MAgPIE object
 #' @param xlab label of x-dimension
 #' @param ylab label of y-dimension
@@ -10,12 +10,11 @@
 #' @author Jan Philipp Dietrich
 #' @seealso \code{\link{getCoords}}
 #' @examples
-#' 
+#'
 #' hasCoords(maxample("pop"))
 #' hasCoords(maxample("animal"))
-#' 
-#' 
+#'
 #' @export
-hasCoords <- function(x, xlab="x", ylab="y") {
-  return(all(dimExists(c(xlab,ylab),x)))
+hasCoords <- function(x, xlab = "x", ylab = "y") {
+  return(all(dimExists(c(xlab, ylab), x)))
 }
