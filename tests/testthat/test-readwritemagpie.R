@@ -38,7 +38,7 @@ test_that("read/write does not affect content", {
   expect_silent(write.magpie(m2, tmpfile))
   expect_silent(in2 <- read.magpie(tmpfile))
   names(dimnames(in2)) <- NULL
-  attr(m2, "Metadata") <- NULL # nolint
+  attr(m2, "Metadata") <- NULL
   expect_equal(in2, m2)
   unlink(tmpfile)
 
@@ -65,7 +65,7 @@ test_that("read supports older formats", {
   expect_silent(a <- read.magpie(f1))
   ref1 <- new("magpie", .Data = structure(552.666381835938, .Dim = c(1L, 1L, 1L),
                                           .Dimnames = list(i = "AFR", t = "y1995", scenario = "A2")))
-  attr(ref1, "FileFormatVersion") <- 4 # nolint
+  attr(ref1, "FileFormatVersion") <- 4
   expect_equal(a, ref1)
 
   f2 <- system.file("extdata", "testdata", "oldformat2.mz", package = "magclass")
@@ -73,7 +73,7 @@ test_that("read supports older formats", {
   ref2 <- new("magpie", .Data = structure(c(552.666381835938, 1280.63500976562), .Dim = c(2L, 1L, 1L),
                                           .Dimnames = list(i.j = c("AFR.1", "AFR.2"),
                                                            t = "y1995", scenario = "A2")))
-  attr(ref2, "FileFormatVersion") <- 4 # nolint
+  attr(ref2, "FileFormatVersion") <- 4
   expect_equal(a2, ref2)
 })
 
@@ -104,7 +104,7 @@ test_that("handling of spatial data works", {
   a <- dimSums(a, dim = c(1.3, 1.4, 2, 3))
   write.magpie(a, file.path(td, "animal.asc"))
   asc <- read.magpie(file.path(td, "animal.asc"))
-  attr(asc, ".internal.selfref")  <- NULL # nolint
+  attr(asc, ".internal.selfref")  <- NULL
   getItems(asc, dim = 2) <- NULL
   getItems(asc, dim = 3) <- NULL
   expect_identical(asc, a)

@@ -1,5 +1,5 @@
 p <- maxample("pop")
-attr(p, "Metadata") <- NULL # nolint
+attr(p, "Metadata") <- NULL
 
 test_that("read/write report works", {
   ref <- structure(list(Model = "N/A", Scenario = "N/A", Region = "World", Variable = "1",
@@ -98,7 +98,7 @@ test_that("multidim handling works", {
                    row.names = c(1L, 3L, 2L, 4L), class = "data.frame")
   expect_identical(write.report(p[1:2, 1:2, ], extracols = "Xtra"), ref)
   ref2 <- ref[-4]
-  ref2$Variable <- "blub" # nolint
+  ref2$Variable <- "blub"
   expect_identical(write.report(p[1:2, 1:2, ]), ref2)
 })
 

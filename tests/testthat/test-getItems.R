@@ -26,12 +26,12 @@ test_that("getItems replacement works in case of incorrect set names", {
 
 test_that("getItems can add and replace (sub)dimensions and separators are replaced with commas", {
   x <- pop
-  expect_silent(getItems(x, "j", maindim = 1) <- 1:dim(x)[1])
-  expect_identical(dimnames(x)[[1]], paste0(dimnames(pop)[[1]], ".", 1:dim(x)[1]))
+  expect_silent(getItems(x, "j", maindim = 1) <- seq_len(dim(x)[1]))
+  expect_identical(dimnames(x)[[1]], paste0(dimnames(pop)[[1]], ".", seq_len(dim(x)[1])))
   expect_identical(names(dimnames(x))[1], "i.j")
 
-  expect_silent(getItems(x, "i") <- paste0("A.", dim(x)[1]:1))
-  expect_identical(dimnames(x)[[1]], paste0("Ap", dim(x)[1]:1, ".", 1:dim(x)[1]))
+  expect_silent(getItems(x, "i") <- paste0("A.", rev(seq_len(dim(x)[1]))))
+  expect_identical(dimnames(x)[[1]], paste0("Ap", rev(seq_len(dim(x)[1])), ".", seq_len(dim(x)[1])))
   expect_identical(names(dimnames(x))[1], "i.j")
 
   expect_silent(getItems(x, 1) <- getItems(pop, dim = 1, split = FALSE))
@@ -68,17 +68,17 @@ test_that("getItems returns errors for unsupported inputs", {
 
 test_that("getItems maps entries when input vector is named", {
   x <- pop
-  value <- 1:dim(x)[1]
+  value <- seq_len(dim(x)[1])
   names(value) <- rev(getItems(x, 1))
   expect_silent(getItems(x, 1) <- value)
-  expect_identical(getItems(x, 1), as.character(dim(x)[1]:1))
+  expect_identical(getItems(x, 1), as.character(rev(seq_len(dim(x)[1]))))
 
   # test for subdimensioin
   x <- pop
   expect_warning(getItems(x, "j", maindim = 1) <- value, "Names of input vector are being ignored")
   expect_silent(x2 <- setItems(x, "i", value))
   expect_silent(getItems(x, "i") <- value)
-  expect_identical(getItems(x, "i"), as.character(dim(x)[1]:1))
+  expect_identical(getItems(x, "i"), as.character(rev(seq_len(dim(x)[1]))))
   expect_identical(x, x2)
 
   a <- maxample("animal")

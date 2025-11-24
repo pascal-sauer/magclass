@@ -112,7 +112,7 @@ test_that("isYear works", {
 
 test_that("getYear works", {
   expect_error(getYears(p) <- 1999, "Wrong number of years")
-  expect_silent(getYears(p[, -(1:nyears(p)), ]) <- NULL) # nolint
+  expect_silent(getYears(p[, -(1:nyears(p)), ]) <- NULL)
   p1 <- p[, 1, ]
   expect_silent(getYears(p1) <- NULL)
   expect_null(getYears(p1))

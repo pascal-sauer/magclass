@@ -72,7 +72,7 @@ test_that("error detection works", {
   expect_error(p[, , list(blub = "A2")], "subdimension does not exist")
 
   names(dimnames(p)) <- NULL
-  expect_error(p[, , list(scenario = "A2")], "subdimension does not exist \\(missing set names\\)") # nolint
+  expect_error(p[, , list(scenario = "A2")], "subdimension does not exist \\(missing set names\\)")
 
   dimnames(p)[[3]] <- NULL
   expect_error(p[, , "A2"], "Missing element names")

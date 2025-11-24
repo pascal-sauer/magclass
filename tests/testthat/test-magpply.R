@@ -19,8 +19,8 @@ test_that("magpply works", {
                                 .Dim = c(1L, 1L, 5L),
                                 .Dimnames = list(d1 = NULL, d2 = NULL,
                                                  type.species.color = c("animal.rabbit.black", "animal.rabbit.white",
-                                                                      "animal.bird.black", "animal.bird.red",
-                                                                      "animal.dog.brown"))))
+                                                                        "animal.bird.black", "animal.bird.red",
+                                                                        "animal.dog.brown"))))
   expect_error(magpply(a, FUN = mean, DIM = 1, MARGIN = 2:3), "specify either MARGIN or DIM")
 
   ref3 <- new("magpie", .Data = structure(c(2709, 1965), .Dim = c(2L, 1L, 1L),

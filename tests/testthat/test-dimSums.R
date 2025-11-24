@@ -18,8 +18,8 @@ test_that("dimSums works", {
                                 .Dim = c(1L, 1L, 5L),
                                 .Dimnames = list(d1 = NULL, d2 = NULL,
                                                  type.species.color = c("animal.rabbit.black", "animal.rabbit.white",
-                                                                      "animal.bird.black", "animal.bird.red",
-                                                                      "animal.dog.brown"))))
+                                                                        "animal.bird.black", "animal.bird.red",
+                                                                        "animal.dog.brown"))))
   expect_identical(dimSums(a, dim = 1:2), ref2)
   expect_error(dimSums(1), "Input is not a MAgPIE object")
   expect_error(dimSums(a, dim = 4), "Invalid dimension")
@@ -38,7 +38,7 @@ test_that("dimSums works", {
               .Data = structure(c(0, 13, 1, 13), .Dim = c(1L, 1L, 4L),
                                 .Dimnames = list(d1 = NULL, d2 = NULL,
                                                  type.species.color = c("animal.rabbit.black", "animal.rabbit.white",
-                                                                      "animal.bird.black", "animal.bird.white"))))
+                                                                        "animal.bird.black", "animal.bird.white"))))
   expect_identical(dimSums(ax, dim = 1:2), ref5)
 
   ref3 <- new("magpie", .Data = structure(25770, .Dim = c(1L, 1L, 1L),
