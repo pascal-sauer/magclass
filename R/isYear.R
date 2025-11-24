@@ -15,7 +15,7 @@
 #' isYear(x, with_y = TRUE)
 #' isYear(x, with_y = FALSE)
 #' @export
-isYear <- function(x, with_y = TRUE) { #nolint
+isYear <- function(x, with_y = TRUE) { # nolint: object_name_linter.
   if (is.null(x)) return(FALSE)
   if (!is.vector(x)) {
     stop("Year Object is no Vector")

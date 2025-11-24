@@ -68,18 +68,19 @@
 #' @export
 #' @importFrom utils read.table
 #'
-read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # nolint
+read.report <- function(file, as.list = TRUE, # nolint: object_name_linter, cyclocomp_linter.
+                        showSeparatorWarning = TRUE) {
 
   .trim <- function(a) return(gsub("(^ +)|( +$)", "", as.character(a)))
 
   .returnMagpie <- function(tmp, scenario, model) {
     # replace weird degree symbol in tables
-    tmp$Unit <- enc2utf8(tmp$Unit) # nolint
-    tmp$Unit <- sub(pattern = "\U{00B0}C", replacement = "K", x = tmp$Unit, useBytes = TRUE) # nolint
+    tmp$Unit <- enc2utf8(tmp$Unit)
+    tmp$Unit <- sub(pattern = "\U{00B0}C", replacement = "K", x = tmp$Unit, useBytes = TRUE)
     regions <- unique(as.character(tmp$Region))
     names(regions) <- regions
     years <- sub("X", "y", grep("^X[0-9]{4}$", dimnames(tmp)[[2]], value = TRUE))
-    names <- unique(paste(tmp$Variable, "#SPLITHERE# (", tmp$Unit, ")", sep = "")) # nolint
+    names <- unique(paste(tmp$Variable, "#SPLITHERE# (", tmp$Unit, ")", sep = ""))
     names(names) <- sub("#SPLITHERE#", "", names)
     names <- sub("#SPLITHERE#", "", names)
     # delete dots if they are aparently not used as dimension separator
@@ -145,17 +146,17 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
     }
 
     output <- list()
-    raw$Scenario <- .trim(raw$Scenario) # nolint
-    raw$Model    <- .trim(raw$Model)    # nolint
-    raw$Region   <- .trim(raw$Region)   # nolint
-    raw$Unit     <- .trim(raw$Unit)     # nolint
-    raw$Variable <- .trim(raw$Variable) # nolint
+    raw$Scenario <- .trim(raw$Scenario)
+    raw$Model    <- .trim(raw$Model)
+    raw$Region   <- .trim(raw$Region)
+    raw$Unit     <- .trim(raw$Unit)
+    raw$Variable <- .trim(raw$Variable)
 
     raw$Model[is.na(raw$Model)] <- "NA"
     raw$Scenario[is.na(raw$Scenario)] <- "NA"
 
-    raw$Region <- sub("R5\\.2", "", raw$Region)        # nolint
-    raw$Region <- sub("World|glob", "GLO", raw$Region) # nolint
+    raw$Region <- sub("R5\\.2", "", raw$Region)
+    raw$Region <- sub("World|glob", "GLO", raw$Region)
     models <- unique(raw$Model)
     scenarios <- unique(raw$Scenario)
     for (scenario in scenarios) {

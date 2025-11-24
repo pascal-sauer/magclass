@@ -24,7 +24,7 @@ getRegionList <- function(x) { # nolint: undesirable_function_linter.
 
 #' @describeIn getRegionList set region names
 #' @export
-`getRegionList<-` <- function(x, value) { # nolint
+`getRegionList<-` <- function(x, value) {
   reg <- getRegionList(x) # nolint: undesirable_function_linter.
   if (length(reg) != length(value)) stop("Lengths of RegionLists do not agree!")
   tmp <- sub("^.*\\.", "", dimnames(x)[[1]])

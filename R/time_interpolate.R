@@ -26,17 +26,19 @@
 #' time_interpolate(p, c("y1980", "y2000"), integrate = TRUE, extrapolation_type = "constant")
 #' @importFrom abind abind
 #' @export
-time_interpolate <- function(dataset, interpolated_year, integrate_interpolated_years = FALSE,  # nolint
-                             extrapolation_type = "linear") {                                   # nolint
+time_interpolate <- function(dataset, interpolated_year, # nolint: object_name_linter.
+                             integrate_interpolated_years = FALSE, # nolint: object_name_linter.
+                             extrapolation_type = "linear") { # nolint: object_name_linter.
   if (!is.magpie(dataset)) {
     stop("Invalid data format of measured data. Has to be a MAgPIE-object.")
   }
+  interpolatedYear <- interpolated_year
   dataset <- clean_magpie(dataset, what = "sets")
   sets <- getSets(dataset)
-  if (all(isYear(interpolated_year, with_y = FALSE))) {
-    interpolated_year <- paste("y", interpolated_year, sep = "") # nolint
+  if (all(isYear(interpolatedYear, with_y = FALSE))) {
+    interpolatedYear <- paste("y", interpolatedYear, sep = "")
   } else  {
-    if (!any(isYear(interpolated_year, with_y = TRUE))) {
+    if (!any(isYear(interpolatedYear, with_y = TRUE))) {
       stop("year not in the right format")
     }
   }
@@ -47,7 +49,7 @@ time_interpolate <- function(dataset, interpolated_year, integrate_interpolated_
     dataset <- mbind(tmp, dataset)
   }
 
-  interpolatedYearFiltered <- interpolated_year[!interpolated_year %in% getYears(dataset)]
+  interpolatedYearFiltered <- interpolatedYear[!interpolatedYear %in% getYears(dataset)]
   datasetInterpolated       <- array(NA,
     dim = c(dim(dataset)[1], length(interpolatedYearFiltered), dim(dataset)[3]),
     dimnames = list(getCells(dataset), interpolatedYearFiltered, getNames(dataset))
@@ -55,23 +57,23 @@ time_interpolate <- function(dataset, interpolated_year, integrate_interpolated_
   dataset <- as.array(dataset)
 
 
-  for (single_interpolated_year in interpolatedYearFiltered) {
-    sortedYears                <-  sort(c(dimnames(dataset)[[2]], single_interpolated_year))
-    if (sortedYears[1] == single_interpolated_year) {
+  for (singleInterpolatedYear in interpolatedYearFiltered) {
+    sortedYears                <-  sort(c(dimnames(dataset)[[2]], singleInterpolatedYear))
+    if (sortedYears[1] == singleInterpolatedYear) {
       yearBefore <- sortedYears[2]
       yearAfter  <- sortedYears[3]
       yearExtrapolate <- ifelse(extrapolation_type == "constant", sortedYears[2], -1)
-    } else if (sortedYears[length(sortedYears)] == single_interpolated_year) {
+    } else if (sortedYears[length(sortedYears)] == singleInterpolatedYear) {
       yearBefore <- sortedYears[length(sortedYears) - 2]
       yearAfter  <- sortedYears[length(sortedYears) - 1]
       yearExtrapolate <- ifelse(extrapolation_type == "constant", sortedYears[length(sortedYears) - 1], -1)
     } else {
-      yearBefore <- sortedYears[which(sortedYears == single_interpolated_year) - 1]
-      yearAfter <- sortedYears[which(sortedYears == single_interpolated_year) + 1]
+      yearBefore <- sortedYears[which(sortedYears == singleInterpolatedYear) - 1]
+      yearAfter <- sortedYears[which(sortedYears == singleInterpolatedYear) + 1]
       yearExtrapolate <- -1
     }
 
-    interpolatedYearInt       <- as.integer(substring(single_interpolated_year, 2))
+    interpolatedYearInt       <- as.integer(substring(singleInterpolatedYear, 2))
     yearBeforeInt             <- as.integer(substring(yearBefore, 2))
     yearAfterInt              <- as.integer(substring(yearAfter, 2))
 
@@ -81,15 +83,15 @@ time_interpolate <- function(dataset, interpolated_year, integrate_interpolated_
 
 
     if (yearExtrapolate == -1) {
-      datasetInterpolated[, single_interpolated_year, ] <- dataset[, yearBefore, , drop = FALSE] +
+      datasetInterpolated[, singleInterpolatedYear, ] <- dataset[, yearBefore, , drop = FALSE] +
         yearBeforeToInterpolated * datasetDifference /
           yearBeforeToAfter
     } else {
-      datasetInterpolated[, single_interpolated_year, ] <- dataset[, yearExtrapolate, , drop = FALSE]
+      datasetInterpolated[, singleInterpolatedYear, ] <- dataset[, yearExtrapolate, , drop = FALSE]
     }
   }
   if (integrate_interpolated_years == FALSE) {
-    addYears <- setdiff(interpolated_year, interpolatedYearFiltered)
+    addYears <- setdiff(interpolatedYear, interpolatedYearFiltered)
     if (length(addYears) > 0) {
       dataset <- abind::abind(datasetInterpolated, dataset[, addYears, , drop = FALSE], along = 2)
     } else {

@@ -28,7 +28,8 @@
 #' write.report(maxample("pop"))
 #' @importFrom utils write.table
 #' @export
-write.report <- function(x, file = NULL, model = NULL, scenario = NULL, unit = NULL, ndigit = 4, # nolint
+write.report <- function(x, # nolint: object_name_linter.
+                         file = NULL, model = NULL, scenario = NULL, unit = NULL, ndigit = 4,
                          append = FALSE, skipempty = TRUE, extracols = NULL) {
 
   scenarioCall <- scenario

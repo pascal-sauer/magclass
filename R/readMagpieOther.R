@@ -1,4 +1,5 @@
-readMagpieOther <- function(fileName, fileType, comment.char = "*", check.names = FALSE) {  # nolint
+readMagpieOther <- function(fileName, fileType, # nolint: cyclocomp_linter.
+                            comment.char = "*", check.names = FALSE) { # nolint: object_name_linter.
   sep <- ifelse(fileType == "put", "\t", ",")
   # check for header
   temp <- utils::read.csv(fileName, nrows = 1, header = FALSE, sep = sep, comment.char = comment.char,

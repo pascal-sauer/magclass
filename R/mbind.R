@@ -25,8 +25,7 @@
 #' @importFrom methods new
 #' @importFrom abind abind
 #' @export
-
-mbind <- function(...) { #nolint
+mbind <- function(...) { # nolint: cyclocomp_linter.
   inputs <- list(...)
   if (length(inputs) == 1 && is.list(inputs[[1]])) inputs <- inputs[[1]]
   # Remove NULL elements from list

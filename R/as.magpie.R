@@ -65,7 +65,7 @@ setMethod("as.magpie",
             return(out)
           })
 
-setMethod("as.magpie", # nolint
+setMethod("as.magpie", # nolint: cyclocomp_linter.
   signature(x = "array"),
   function(x, spatial = NULL, temporal = NULL, unit = "unknown", ...) {
     storeAttributes <- copy.attributes(x, 0)

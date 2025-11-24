@@ -79,7 +79,7 @@ setMethod("as.data.frame",
   }
 )
 
-asDataFrameX <- function(x, raw, stringsAsFactors = FALSE) { # nolint
+asDataFrameX <- function(x, raw, stringsAsFactors = FALSE) { # nolint: cyclocomp_linter.
   x <- clean_magpie(x, what = "sets")
   if (any(dim(x) == 0)) {
     return(data.frame())

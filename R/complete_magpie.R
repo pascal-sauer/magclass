@@ -19,8 +19,7 @@
 #' ani <- maxample("animal")
 #' complete_magpie(ani)
 #' @export
-
-complete_magpie <- function(x, fill = NA, dim = 3) { #nolint
+complete_magpie <- function(x, fill = NA, dim = 3) { # nolint: object_name_linter.
   .expand <- function(x) {
     grid <- expand.grid(x, stringsAsFactors = FALSE)
     return(sort(apply(grid, 1, paste, collapse = ".")))

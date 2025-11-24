@@ -306,7 +306,7 @@ setClass("magpie", contains = "array", prototype = array(0, c(0, 0, 0)))
 }
 
 #' @exportMethod [
-setMethod("[", # nolint
+setMethod("[", # nolint: cyclocomp_linter.
   signature(x = "magpie"),
   function(x, i, j, k, ..., pmatch = FALSE, invert = FALSE, dim = NULL, drop = FALSE) {
     if (...length() > 0) {

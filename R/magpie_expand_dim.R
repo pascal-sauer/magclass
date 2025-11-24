@@ -25,7 +25,7 @@
 #'                     "BLA.AFR.B", "BLA.EUR.B", "BLUB.AFR.B", "BLUB.EUR.B"), fill = 2)
 #'  getSets(e)[1:3] <- c("b", "reg", "a")
 #'  magclass:::magpie_expand_dim(d, e, dim = 1)
-magpie_expand_dim <- function(x, ref, dim = 1) { #nolint
+magpie_expand_dim <- function(x, ref, dim = 1) { # nolint: object_name_linter.
 
   if (!(dim %in% seq_len(3))) stop("Unsupported dim setting (dim = ", dim, ")")
 

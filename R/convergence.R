@@ -35,7 +35,8 @@
 #' population <- add_columns(pop, "MIX")
 #' population[, , "MIX"] <- convergence(population[, , "A2"], population[, , "B1"])
 #' @export
-convergence <- function(origin, aim, start_year = NULL, end_year = NULL, # nolint
+convergence <- function(origin, aim,
+                        start_year = NULL, end_year = NULL, # nolint: object_name_linter.
                         direction = NULL, type = "smooth", par = 1.5) {
   ### Basic checks ###
   if (!is.magpie(origin)) stop("origin is no magpie object")
@@ -95,7 +96,7 @@ convergence <- function(origin, aim, start_year = NULL, end_year = NULL, # nolin
   } else if (type == "smooth") {
     mix <- pos^3 / (0.1 + pos^3)
   } else if (type == "decay") {
-    mix <- pos / (par + pos) * (par + 1) # nolint
+    mix <- pos / (par + pos) * (par + 1) # nolint: undesirable_function_linter.
   } else {
     stop("type does not exist")
   }

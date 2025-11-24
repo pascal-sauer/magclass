@@ -38,10 +38,10 @@
 #' options(magclass.verbosity = 2)
 #' magpie_expand(b, a)
 #' @export
-magpie_expand <- function(x, ref) { # nolint
+magpie_expand <- function(x, ref) { # nolint: object_name_linter, cyclocomp_linter.
 
   version <- getOption("magclass_expand_version")
-  if (is.null(version)) options("magclass_expand_version" = 2.1) #nolint
+  if (is.null(version)) options("magclass_expand_version" = 2.1) # nolint: undesirable_function_linter.
   if (!is.null(version) && version != 2.1) stop("Unsupported magclass expand version (", version, ")!")
 
   setMatching <- isTRUE(getOption("magclass_setMatching"))

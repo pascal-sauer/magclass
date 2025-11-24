@@ -90,7 +90,7 @@ mselect <- function(x, ..., collapseNames = FALSE) {
 
 #' @describeIn mselect replace values in magpie object
 #' @export
-`mselect<-` <- function(x, ..., value) { # nolint
+`mselect<-` <- function(x, ..., value) {
   m <- .mselectCoords(x, ...)
   x[m$i, m$j, m$k] <- value
   return(x)

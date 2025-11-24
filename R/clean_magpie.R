@@ -21,7 +21,7 @@
 #' pop <- maxample("pop")
 #' a <- clean_magpie(pop)
 #' @export
-clean_magpie <- function(x, what = "all", maindim = 1:3) { # nolint
+clean_magpie <- function(x, what = "all", maindim = 1:3) { # nolint: object_name_linter, cyclocomp_linter.
   availableTypes <- c("cells", "items", "sets")
   if ("all" %in% what) what <- availableTypes
   if (any(!is.element(what, availableTypes))) stop('Unknown setting for argument what ("', what, '")!')

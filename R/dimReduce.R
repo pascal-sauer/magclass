@@ -32,8 +32,7 @@
 #' str(p)
 #' str(dimReduce(p))
 #' @export
-
-dimReduce <- function(x, dim_exclude = NULL) { # nolint
+dimReduce <- function(x, dim_exclude = NULL) { # nolint: object_name_linter.
   x <- collapseDim(x)
   x <- clean_magpie(x)
   fd <- unlist(getItems(x, split = TRUE), recursive = FALSE)

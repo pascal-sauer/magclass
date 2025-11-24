@@ -4,10 +4,11 @@
 #' @inheritParams tibble::as_tibble
 #' @return A tibble object
 #' @exportS3Method tibble::as_tibble
-as_tibble.magpie <- function(x, # nolint
+as_tibble.magpie <- function(x,
                              ...,
                              .rows = NULL,
-                             .name_repair = c("check_unique", "unique", "universal", "minimal"), # nolint
+                             .name_repair = c("check_unique", # nolint: object_name_linter.
+                                              "unique", "universal", "minimal"),
                              rownames = pkgconfig::get_config("tibble::rownames", NULL)) {
   # Turn the magpie object into a data.frame and rename ".value" to "value" - the default column name for values in
   # tibbles.

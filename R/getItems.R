@@ -31,7 +31,7 @@
 #' y <- x[, 1, ]
 #' getItems(y, "t") <- NULL
 #' @export
-getItems <- function(x, dim = NULL, split = FALSE, full = FALSE) { # nolint
+getItems <- function(x, dim = NULL, split = FALSE, full = FALSE) { # nolint: cyclocomp_linter.
   if (is.null(dim)) dim <- 1:3
   dim <- dimCode(dim, x, missing = "stop")
   if (setequal(dim, 1:3) && !split) return(dimnames(x))
@@ -76,7 +76,7 @@ getItems <- function(x, dim = NULL, split = FALSE, full = FALSE) { # nolint
 
 #' @describeIn getItems set dimension names
 #' @export
-`getItems<-` <- function(x, dim, full = NULL, maindim = NULL, raw = FALSE, value) { # nolint
+`getItems<-` <- function(x, dim, full = NULL, maindim = NULL, raw = FALSE, value) { # nolint: cyclocomp_linter.
   if (!is.null(full) && !isTRUE(full)) stop("Currently only full = NULL or TRUE supported!")
   if (length(dim) > 1) stop("dim with length > 1 is currently not supported when setting items.")
   dc <- dimCode(dim, x)
