@@ -13,7 +13,7 @@
 #' @examples
 #' pop <- maxample("pop")
 #' a <- magpiesort(pop)
-#' @export magpiesort
+#' @export
 magpiesort <- function(x) {
   if (!is.magpie(x)) {
     stop("Input is not a MAgPIE object!")

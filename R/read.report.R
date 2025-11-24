@@ -65,7 +65,7 @@
 #' read.report("report.csv")
 #' }
 #'
-#' @export read.report
+#' @export
 #' @importFrom utils read.table
 #'
 read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # nolint

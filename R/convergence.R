@@ -34,7 +34,7 @@
 #' pop <- maxample("pop")
 #' population <- add_columns(pop, "MIX")
 #' population[, , "MIX"] <- convergence(population[, , "A2"], population[, , "B1"])
-#' @export convergence
+#' @export
 convergence <- function(origin, aim, start_year = NULL, end_year = NULL, # nolint
                         direction = NULL, type = "smooth", par = 1.5) {
   ### Basic checks ###

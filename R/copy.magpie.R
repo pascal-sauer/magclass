@@ -14,7 +14,7 @@
 #' @examples
 #'
 #' # copy.magpie("bla.csv","blub.mz")
-#' @export copy.magpie
+#' @export
 copy.magpie <- function(input_file, output_file, round = NULL) { #nolint
   inType  <- tail(strsplit(input_file, "\\.")[[1]], 1)
   outType <- tail(strsplit(output_file, "\\.")[[1]], 1)

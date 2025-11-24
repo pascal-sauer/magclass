@@ -24,7 +24,7 @@
 #'
 #' pop <- maxample("pop")
 #' dimCode(c("t", "scenario", "blablub"), pop)
-#' @export dimCode
+#' @export
 dimCode <- function(dim, x, missing = 0, strict = FALSE, sep = ".") {
 
   if (all(is.character(dim)) && any(grepl(sep, dim, fixed = TRUE))) {

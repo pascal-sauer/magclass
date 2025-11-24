@@ -20,7 +20,7 @@
 #'
 #' pop <- maxample("pop")
 #' a <- clean_magpie(pop)
-#' @export clean_magpie
+#' @export
 clean_magpie <- function(x, what = "all", maindim = 1:3) { # nolint
   availableTypes <- c("cells", "items", "sets")
   if ("all" %in% what) what <- availableTypes

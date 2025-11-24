@@ -21,7 +21,7 @@
 #' @author Jan Philipp Dietrich, David Klein, Xiaoxi Wang
 #' @seealso \code{\link{collapseDim}}, \code{\link{getItems}},
 #' \code{"\linkS4class{magpie}"}
-#' @export collapseNames
+#' @export
 
 collapseNames <- function(x, collapsedim = NULL, preservedim = NULL) {
   .dimCodeExtra <- function(dim, x) {
