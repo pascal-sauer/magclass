@@ -1,4 +1,4 @@
-tidy2magpie <- function(x, spatial = NULL, temporal = NULL) { #nolint
+tidy2magpie <- function(x, spatial = NULL, temporal = NULL) { # nolint: cyclocomp_linter.
   # assumption: dataframe format in which only the very last
   #             column contains values!
   if ("data.frame" %in% class(x)) {
@@ -12,7 +12,7 @@ tidy2magpie <- function(x, spatial = NULL, temporal = NULL) { #nolint
     if (is.factor(x[[i]])) x[[i]] <- as.character(x[[i]])
   }
 
-  if (is.null(colnames(x))) colnames(x) <- paste0("col", 1:dim(x)[2])
+  if (is.null(colnames(x))) colnames(x) <- paste0("col", seq_len(dim(x)[2]))
   if (anyNA(colnames(x))) colnames(x)[is.na(colnames(x))] <- "NA"
   colnames(x) <- make.unique(colnames(x), sep = "")
 

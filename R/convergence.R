@@ -34,10 +34,10 @@
 #' pop <- maxample("pop")
 #' population <- add_columns(pop, "MIX")
 #' population[, , "MIX"] <- convergence(population[, , "A2"], population[, , "B1"])
-#' @export convergence
-convergence <- function(origin, aim, start_year = NULL, end_year = NULL, # nolint
+#' @export
+convergence <- function(origin, aim,
+                        start_year = NULL, end_year = NULL, # nolint: object_name_linter.
                         direction = NULL, type = "smooth", par = 1.5) {
-
   ### Basic checks ###
   if (!is.magpie(origin)) stop("origin is no magpie object")
 
@@ -47,7 +47,7 @@ convergence <- function(origin, aim, start_year = NULL, end_year = NULL, # nolin
 
   if (!identical(dimnames(aim)[[1]], dimnames(origin)[[1]])) stop("regions have to be the same")
 
-  if (ndata(origin) != 1 & !identical(getNames(origin), getNames(aim))) {
+  if (ndata(origin) != 1 && !identical(getNames(origin), getNames(aim))) {
     stop("If there ist more than one name-column, dimnames have to be the same")
   }
 
@@ -96,7 +96,7 @@ convergence <- function(origin, aim, start_year = NULL, end_year = NULL, # nolin
   } else if (type == "smooth") {
     mix <- pos^3 / (0.1 + pos^3)
   } else if (type == "decay") {
-    mix <- pos / (par + pos) * (par + 1) # nolint
+    mix <- pos / (par + pos) * (par + 1) # nolint: undesirable_function_linter.
   } else {
     stop("type does not exist")
   }

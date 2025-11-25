@@ -18,7 +18,7 @@ test_that("reshape can table subdims, other dims will be printed in header", {
   animal <- maxample("animal")
   d <- c(3.1, 3.2, 3.3)
   headerReshapesubdim3print <- capture.output(print(animal, reshape = d))[1]
-  expect_true(all(sapply(getSets(animal)[paste0("d", d)], grepl, headerReshapesubdim3print)))
+  expect_true(all(vapply(getSets(animal)[paste0("d", d)], grepl, logical(1), headerReshapesubdim3print)))
 })
 
 test_that("everything else works", {

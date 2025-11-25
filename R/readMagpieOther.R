@@ -1,11 +1,12 @@
-readMagpieOther <- function(fileName, fileType, comment.char = "*", check.names = FALSE) {  # nolint
+readMagpieOther <- function(fileName, fileType, # nolint: cyclocomp_linter.
+                            comment.char = "*", check.names = FALSE) { # nolint: object_name_linter.
   sep <- ifelse(fileType == "put", "\t", ",")
   # check for header
   temp <- utils::read.csv(fileName, nrows = 1, header = FALSE, sep = sep, comment.char = comment.char,
                           check.names = check.names, stringsAsFactors = TRUE)
 
   # check for numeric elements in first row, which means a missing header
-  header <- !any(sapply(temp, is.numeric)) #nolint
+  header <- !any(vapply(temp, is.numeric, logical(1)))
 
   temp <- utils::read.csv(fileName, header = header, sep = sep, comment.char = comment.char,
                           check.names = check.names, stringsAsFactors = TRUE)

@@ -1,5 +1,3 @@
-library(testthat)
-
 context("Subsetting test")
 
 p <- maxample("pop")
@@ -74,7 +72,7 @@ test_that("error detection works", {
   expect_error(p[, , list(blub = "A2")], "subdimension does not exist")
 
   names(dimnames(p)) <- NULL
-  expect_error(p[, , list(scenario = "A2")], "subdimension does not exist \\(missing set names\\)") # nolint
+  expect_error(p[, , list(scenario = "A2")], "subdimension does not exist \\(missing set names\\)")
 
   dimnames(p)[[3]] <- NULL
   expect_error(p[, , "A2"], "Missing element names")
@@ -166,8 +164,8 @@ test_that("data.frame subsetting works", {
   df$species <- NULL
   expect_identical(getItems(a[df[1, ]], 3), c("animal.rabbit.black.bl1", "animal.bird.black.bl1"))
   expect_identical(getItems(a[df[w, ]], 3), c("animal.rabbit.black.bl1", "animal.bird.black.bl1",
-    "animal.rabbit.black.bl3", "animal.bird.black.bl3",
-    "animal.bird.red.bl4"))
+                                              "animal.rabbit.black.bl3", "animal.bird.black.bl3",
+                                              "animal.bird.red.bl4"))
 
   df2 <- df
   df2$type <- NULL
@@ -178,13 +176,13 @@ test_that("data.frame subsetting works", {
   df[3, 1] <- "car"
   expect_message(b <- a[df[w, ]], "elements were added")
   expect_identical(getItems(b, 3), c("animal.rabbit.black.bl1", "animal.bird.black.bl1",
-    "animal.bird.red.bl4", "car.NA.black.bl3"))
+                                     "animal.bird.red.bl4", "car.NA.black.bl3"))
   expect_true(all(is.na(b[, , "car.NA.black.bl3"])))
 
   df[4, 1] <- "house"
   expect_message(b <- a[df[w, ]], "elements were added")
   expect_identical(getItems(b, 3), c("animal.rabbit.black.bl1", "animal.bird.black.bl1",
-    "car.NA.black.bl3", "house.NA.red.bl4"))
+                                     "car.NA.black.bl3", "house.NA.red.bl4"))
 
 
   df1 <- data.frame(getItems(a, 1, split = TRUE, full = TRUE))

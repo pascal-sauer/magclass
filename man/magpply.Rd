@@ -29,7 +29,6 @@ magpie object
 apply command for magpieobjects. Very efficient for replacing loops.
 }
 \examples{
-
 pop <- maxample("pop")
 magpply(pop, FUN = sum, MARGIN = 2)
 fourdim <- pop * setNames(pop, c("jkk", "lk"))

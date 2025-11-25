@@ -12,11 +12,11 @@
 #' @author Jan Philipp Dietrich
 #' @seealso \code{\link{as.magpie}},\code{\link{unwrap}},\code{\link{wrap}}
 #' @export
-fulldim <- function(x, sep = ".") { #nolint
+fulldim <- function(x, sep = ".") { # nolint: undesirable_function_linter.
   .Deprecated("getItems")
   if (!is.null(dimnames(x)[[3]])) {
     elemsplit <- strsplit(dimnames(x)[[3]], sep, fixed = TRUE)
-    tmp <- sapply(elemsplit, length) #nolint
+    tmp <- vapply(elemsplit, length, integer(1))
   } else {
     tmp <- 0
   }
@@ -43,7 +43,7 @@ fulldim <- function(x, sep = ".") { #nolint
     if (length(tmp) == length(dimnames) || is.null(tmp)) {
       names(dimnames) <- tmp
     } else if (length(tmp) == length(dimnames) + 1 && length(grep(sep, names(dimnames(x))[1], fixed = TRUE)) > 0) {
-        names(dimnames) <- c(names(dimnames(x))[1], tmp[3:length(tmp)])
+      names(dimnames) <- c(names(dimnames(x))[1], tmp[3:length(tmp)])
     }
     return(list(dim, dimnames))
   }

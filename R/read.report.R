@@ -65,22 +65,22 @@
 #' read.report("report.csv")
 #' }
 #'
-#' @export read.report
+#' @export
 #' @importFrom utils read.table
 #'
-read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # nolint
+read.report <- function(file, as.list = TRUE, # nolint: object_name_linter, cyclocomp_linter.
+                        showSeparatorWarning = TRUE) {
 
   .trim <- function(a) return(gsub("(^ +)|( +$)", "", as.character(a)))
 
   .returnMagpie <- function(tmp, scenario, model) {
-
     # replace weird degree symbol in tables
-    tmp$Unit <- enc2utf8(tmp$Unit) # nolint
-    tmp$Unit <- sub(pattern = "\U{00B0}C", replacement = "K", x = tmp$Unit, useBytes = TRUE) # nolint
+    tmp$Unit <- enc2utf8(tmp$Unit)
+    tmp$Unit <- sub(pattern = "\U{00B0}C", replacement = "K", x = tmp$Unit, useBytes = TRUE)
     regions <- unique(as.character(tmp$Region))
     names(regions) <- regions
     years <- sub("X", "y", grep("^X[0-9]{4}$", dimnames(tmp)[[2]], value = TRUE))
-    names <- unique(paste(tmp$Variable, "#SPLITHERE# (", tmp$Unit, ")", sep = "")) # nolint
+    names <- unique(paste(tmp$Variable, "#SPLITHERE# (", tmp$Unit, ")", sep = ""))
     names(names) <- sub("#SPLITHERE#", "", names)
     names <- sub("#SPLITHERE#", "", names)
     # delete dots if they are aparently not used as dimension separator
@@ -101,13 +101,13 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
     regions[order(sub("GLO", "ZZZZZZGLO", regions))] <- dimnames(mag)[[1]]
     mag <- as.array(mag)
     coord <- cbind(regions[tmp$Region], rep(years, each = dim(tmp)[1]),
-      names[paste(tmp$Variable, " (", tmp$Unit, ")", sep = "")])
+                   names[paste(tmp$Variable, " (", tmp$Unit, ")", sep = "")])
     if (dim(coord)[1] > length(mag)) {
       duplicates <- duplicated(as.data.table(coord))
       warning("Duplicate entries found for model \"", model, "\" and scenario \"", scenario,
-        "\" and only the last entry found in the data will be used (duplicate entries: ",
-        paste(apply(rbind(NULL, unique(coord[duplicates, c(1, 3)])), 1, paste, collapse = "|"),
-          collapse = ", "), ")!")
+              "\" and only the last entry found in the data will be used (duplicate entries: ",
+              paste(apply(rbind(NULL, unique(coord[duplicates, c(1, 3)])), 1, paste, collapse = "|"),
+                    collapse = ", "), ")!")
     }
     # suppress warnings from potential NA conversions
     mag[coord] <- suppressWarnings(as.numeric(as.vector(as.matrix(tmp[, yearelems]))))
@@ -118,8 +118,8 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
 
   .readmif <- function(file) {
     defaultHeader <- c("Model", "Scenario", "Region", "Variable", "Unit", "X2005",
-      "X2010", "X2020", "X2030", "X2040", "X2050", "X2060", "X2070",
-      "X2080", "X2090", "X2100")
+                       "X2010", "X2020", "X2030", "X2040", "X2050", "X2060", "X2070",
+                       "X2080", "X2090", "X2100")
     # determine seperator
     s <- read.table(file, sep = ";", header = FALSE, nrows = 1, stringsAsFactors = FALSE)
     if (all(names(s) == "V1")) sep <- "," else sep <- ";"
@@ -132,7 +132,7 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
     if (uglyFormat) raw <- raw[, -dim(raw)[2]]
 
     # rename from uppercase to lowercase
-    if (header & .trim(s[, 1]) == "MODEL") {
+    if (header && .trim(s[, 1]) == "MODEL") {
       names(raw)[1:5] <- defaultHeader[1:5]
     }
 
@@ -140,22 +140,23 @@ read.report <- function(file, as.list = TRUE, showSeparatorWarning = TRUE) { # n
       if (dim(raw)[2] == length(defaultHeader)) {
         warning("Header is missing. Years are being guessed based on structure!")
         dimnames(raw)[[2]] <- defaultHeader
+      } else {
+        stop("Cannot read report. No header given and report has not the standard size!")
       }
-      else stop("Cannot read report. No header given and report has not the standard size!")
     }
 
     output <- list()
-    raw$Scenario <- .trim(raw$Scenario) # nolint
-    raw$Model    <- .trim(raw$Model)    # nolint
-    raw$Region   <- .trim(raw$Region)   # nolint
-    raw$Unit     <- .trim(raw$Unit)     # nolint
-    raw$Variable <- .trim(raw$Variable) # nolint
+    raw$Scenario <- .trim(raw$Scenario)
+    raw$Model    <- .trim(raw$Model)
+    raw$Region   <- .trim(raw$Region)
+    raw$Unit     <- .trim(raw$Unit)
+    raw$Variable <- .trim(raw$Variable)
 
     raw$Model[is.na(raw$Model)] <- "NA"
     raw$Scenario[is.na(raw$Scenario)] <- "NA"
 
-    raw$Region <- sub("R5\\.2", "", raw$Region)        # nolint
-    raw$Region <- sub("World|glob", "GLO", raw$Region) # nolint
+    raw$Region <- sub("R5\\.2", "", raw$Region)
+    raw$Region <- sub("World|glob", "GLO", raw$Region)
     models <- unique(raw$Model)
     scenarios <- unique(raw$Scenario)
     for (scenario in scenarios) {

@@ -34,11 +34,11 @@ Extracts the comment from a MAgPIE-object
 }}
 \examples{
 
- a <- as.magpie(1)
- #returns NULL
+a <- as.magpie(1)
+ # returns NULL
  getComment(a)
- #set the comment
- getComment(a)<-c("bla","blubb")
+ # set the comment
+ getComment(a) <- c("bla", "blubb")
  getComment(a)
 
 }

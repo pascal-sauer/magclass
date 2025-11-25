@@ -19,7 +19,6 @@ order. This function is especially useful when you create new MAgPIE objects
 as the order typically should be correct for MAgPIE objects.
 }
 \examples{
-
 pop <- maxample("pop")
 a <- magpiesort(pop)
 }

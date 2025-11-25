@@ -31,13 +31,14 @@ getSets <- function(x, fulldim = TRUE, sep = ".") {
   out <- names(dimnames(x))[drop = FALSE]
   if (is.null(out)) return(NULL)
 
-  if (fulldim) { #nolint
+  if (fulldim) { # nolint: undesirable_function_linter.
     tmp <- strsplit(out, split = sep, fixed = TRUE)
     tmp <- lapply(tmp, FUN = function(x) {
-                            if (length(x) == 0) x <- NA
-                            return(x)
-                          }
-    )
+      if (length(x) == 0) {
+        x <- NA
+      }
+      return(x)
+    })
     addDimCode <- function(x) {
       names(x) <- seq_along(x)
       return(x)
@@ -54,34 +55,37 @@ getSets <- function(x, fulldim = TRUE, sep = ".") {
 
 #' @describeIn getSets replace set names
 #' @export
-`getSets<-` <- function(x, fulldim = TRUE, sep = ".", value) { #nolint
-   # clean x
-   uncleanSets <- getSets(x)
-   x <- clean_magpie(x, what = "sets")
-   if (is.null(value)) return(x)
-   if (is.null(names(dimnames(x))) || length(value) %in% c(0, 3)) fulldim <- FALSE # nolint
-   if (!fulldim) { # nolint
-     names(dimnames(x)) <- value
-     return(x)
-   } else {
-     sNow <- getSets(x, fulldim = TRUE)
-     if (length(value) != length(sNow)) {
-       if (length(value) != length(uncleanSets)) {
-         stop("Input length does not agree with the number of sets in x!")
-       }
-       # clean value
-       oldValue <- value
-       names(oldValue) <- names(uncleanSets)
-       value <- sNow
-       value[names(oldValue)] <- oldValue
-     }
-
-     mainDim <- as.integer(substring(names(sNow), 2, 2))
-     sNew <- NULL
-     for (i in 1:3) {
+`getSets<-` <- function(x, fulldim = TRUE, sep = ".", value) {
+  fullDim <- fulldim # nolint: undesirable_function_linter.
+  uncleanSets <- getSets(x)
+  x <- clean_magpie(x, what = "sets")
+  if (is.null(value)) {
+    return(x)
+  }
+  if (is.null(names(dimnames(x))) || length(value) %in% c(0, 3)) {
+    fullDim <- FALSE
+  }
+  if (!fullDim) {
+    names(dimnames(x)) <- value
+    return(x)
+  } else {
+    sNow <- getSets(x, fulldim = TRUE)
+    if (length(value) != length(sNow)) {
+      if (length(value) != length(uncleanSets)) {
+        stop("Input length does not agree with the number of sets in x!")
+      }
+      # clean value
+      oldValue <- value
+      names(oldValue) <- names(uncleanSets)
+      value <- sNow
+      value[names(oldValue)] <- oldValue
+    }
+    mainDim <- as.integer(substring(names(sNow), 2, 2))
+    sNew <- NULL
+    for (i in 1:3) {
       sNew <- c(sNew, paste(value[mainDim == i], collapse = sep))
-     }
-     getSets(x, fulldim = FALSE, sep = sep) <- sNew
-     return(x)
-   }
+    }
+    getSets(x, fulldim = FALSE, sep = sep) <- sNew
+    return(x)
+  }
 }

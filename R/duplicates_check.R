@@ -3,10 +3,12 @@
 # than the data.frame counterpart!)
 #' @import data.table
 
-.duplicates_check <- function(coord) {
+.duplicates_check <- function(coord) { # nolint: object_name_linter.
   duplicates <- duplicated(as.data.table(coord))
-  if(any(duplicates)) {
+  if (any(duplicates)) {
     coord <- as.data.frame(coord)
-    warning("Duplicate entries found, only the last entry will be used (duplicate entries: ",paste(apply(rbind(NULL,unique(coord[duplicates,])),1,paste,collapse="|"),collapse=", "),")!")    
-  } 
+    warning("Duplicate entries found, only the last entry will be used (duplicate entries: ",
+            paste(apply(rbind(NULL, unique(coord[duplicates, ])),
+                        1, paste, collapse = "|"), collapse = ", "), ")!")
+  }
 }

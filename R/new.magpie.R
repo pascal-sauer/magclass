@@ -23,17 +23,18 @@
 #' a <- new.magpie(1:10, 1995:2000)
 #' b <- new.magpie(c("AFR", "CPA"), "y1995", c("bla", "blub"), sets = c("i", "t", "value"))
 #' c <- new.magpie()
-#' @export new.magpie
+#' @export
 #' @importFrom methods new
-new.magpie <- function(cells_and_regions = "GLO", years = NULL, names = NULL, # nolint
-                       fill = NA, sort = FALSE, sets = NULL, unit = NULL) {
+new.magpie <- function(cells_and_regions = "GLO", # nolint: object_name_linter.
+                       years = NULL, names = NULL, fill = NA, sort = FALSE, sets = NULL, unit = NULL) {
+  cellsAndRegions <- cells_and_regions
   if (!is.null(unit)) warning("Argument \"unit\" is deprecated and will be ignored!")
-  ncells <- length(cells_and_regions)
+  ncells <- length(cellsAndRegions)
   nyears <- ifelse(is.null(years), 1, length(years))
   ndata  <- ifelse(is.null(names), 1, length(names))
-  if (all(!grepl("\\.", cells_and_regions)) && !is.null(cells_and_regions)) {
-    if (all(is.numeric(cells_and_regions))) {
-      cells_and_regions <- paste("GLO", cells_and_regions, sep = ".") # nolint
+  if (all(!grepl("\\.", cellsAndRegions)) && !is.null(cellsAndRegions)) {
+    if (all(is.numeric(cellsAndRegions))) {
+      cellsAndRegions <- paste("GLO", cellsAndRegions, sep = ".")
     }
   }
   if (all(is.numeric(years)) && all(nchar(years) <= 4)) {
@@ -42,7 +43,7 @@ new.magpie <- function(cells_and_regions = "GLO", years = NULL, names = NULL, # 
   }
 
   object <- new("magpie", array(fill, dim = c(ncells, nyears, ndata)))
-  getItems(object, dim = 1, raw = TRUE) <- as.vector(cells_and_regions)
+  getItems(object, dim = 1, raw = TRUE) <- as.vector(cellsAndRegions)
   getItems(object, dim = 2, raw = TRUE) <- as.vector(years)
   getItems(object, dim = 3, raw = TRUE) <- as.vector(names)
   names(dimnames(object)) <- NULL

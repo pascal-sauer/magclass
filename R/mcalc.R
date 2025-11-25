@@ -24,7 +24,7 @@
 #' mcalc(pop, X12 ~ A2 * B1, append = TRUE)
 #' pop
 #' mcalc(pop, `Nearly B1` ~ 0.5 * A2 + 99.5 * B1)
-#' @export mcalc
+#' @export
 #' @importFrom stats as.formula
 mcalc <- function(x, f, dim = NULL, append = FALSE) {
   x <- clean_magpie(x)

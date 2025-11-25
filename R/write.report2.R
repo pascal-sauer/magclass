@@ -7,7 +7,7 @@
 #' @author Jan Philipp Dietrich
 #' @seealso \code{\link{write.report}}
 #' @export
-write.report2 <- function(...) {
+write.report2 <- function(...) { # nolint: object_name_linter.
   .Deprecated("write.report")
   return(write.report(...))
 }

@@ -20,17 +20,17 @@
 #'
 #' pop <- maxample("pop")
 #' a <- clean_magpie(pop)
-#' @export clean_magpie
-clean_magpie <- function(x, what = "all", maindim = 1:3) { # nolint
+#' @export
+clean_magpie <- function(x, what = "all", maindim = 1:3) { # nolint: object_name_linter, cyclocomp_linter.
   availableTypes <- c("cells", "items", "sets")
   if ("all" %in% what) what <- availableTypes
   if (any(!is.element(what, availableTypes))) stop('Unknown setting for argument what ("', what, '")!')
 
   # remove cell numbers if data is actually regional
   if (is.element("cells", what) && ncells(x) == nregions(x)) {
-      items <- getItems(x, dim = 1.1, full = TRUE)
-      names(items) <- NULL
-      if (!is.null(items)) getItems(x, dim = 1) <- items
+    items <- getItems(x, dim = 1.1, full = TRUE)
+    names(items) <- NULL
+    if (!is.null(items)) getItems(x, dim = 1) <- items
   }
   # make sure that all dimensions have names
   if ("sets" %in% what) {

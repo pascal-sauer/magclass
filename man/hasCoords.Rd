@@ -24,7 +24,6 @@ Checks, whether object contains coordinates.
 hasCoords(maxample("pop"))
 hasCoords(maxample("animal"))
 
-
 }
 \seealso{
 \code{\link{getCoords}}

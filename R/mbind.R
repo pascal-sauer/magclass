@@ -25,8 +25,7 @@
 #' @importFrom methods new
 #' @importFrom abind abind
 #' @export
-
-mbind <- function(...) { #nolint
+mbind <- function(...) { # nolint: cyclocomp_linter.
   inputs <- list(...)
   if (length(inputs) == 1 && is.list(inputs[[1]])) inputs <- inputs[[1]]
   # Remove NULL elements from list
@@ -129,7 +128,7 @@ mbind <- function(...) { #nolint
     output <- new("magpie", abind::abind(inputs, along = 1))
   } else {
     tmp <- function(x) return(length(getNames(x, fulldim = TRUE)))
-    tmp <- sapply(inputs, tmp) #nolint
+    tmp <- vapply(inputs, tmp, integer(1))
     if (length(unique(tmp)) > 1) warning("mbind most likely returned an erronous magpie object due to",
                                          " different numbers of data subdimensions in inputs!")
     output <- new("magpie", abind::abind(inputs, along = 3))

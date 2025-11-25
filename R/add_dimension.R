@@ -17,7 +17,7 @@
 #' str(add_dimension(a, dim = 3.2))
 #' str(add_dimension(a, dim = 2.3, nm = paste0("d", 1:3)))
 #' @export
-add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint
+add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: object_name_linter.
   x <- clean_magpie(x, what = "sets")
   if (is.null(add)) {
     # create non-existing variant of dimension name starting with "new"
@@ -37,7 +37,7 @@ add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint
   items[[add]] <- rep(nm, each = dim(x)[maindim] / length(nm))
   reorder <- c(olddims[olddims < subdim], length(items), olddims[olddims >= subdim])
   items <- items[reorder]
-  items <- items[!sapply(items, is.null)] # nolint
+  items <- items[!vapply(items, is.null, logical(1))]
   getItems(x, dim = maindim, raw = TRUE) <- apply(as.data.frame(items), 1, paste, collapse = ".")
   getSets(x, fulldim = FALSE)[maindim] <- paste(names(items), collapse = ".")
   return(x)

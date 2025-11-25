@@ -24,7 +24,7 @@
 #'
 #' pop <- maxample("pop")
 #' dimCode(c("t", "scenario", "blablub"), pop)
-#' @export dimCode
+#' @export
 dimCode <- function(dim, x, missing = 0, strict = FALSE, sep = ".") {
 
   if (all(is.character(dim)) && any(grepl(sep, dim, fixed = TRUE))) {
@@ -71,7 +71,7 @@ dimCode <- function(dim, x, missing = 0, strict = FALSE, sep = ".") {
   if (strict) dim[!dimExists(dim, x)] <- 0
 
   # check for errors and set "missing"
-  if (any(dim >= 4) | any(dim < 1)) {
+  if (any(dim >= 4) || any(dim < 1)) {
     if (missing == "stop") {
       stop("illegal dimension. Use either dimension 1, 2, or 3, or address subdimensions via 3.1, 3.2, ...")
     }

@@ -32,7 +32,7 @@ dimOrder <- function(x, perm, dim = 3) {
       dimnames(x)[[dim]] <- gsub(pattern = pattern, replacement = order, dimnames(x)[[dim]], perl = TRUE)
     }
     if (!is.null(names(dimnames(x))[dim])) {
-       names(dimnames(x))[dim] <- gsub(pattern = pattern, replacement = order, names(dimnames(x))[dim], perl = TRUE)
+      names(dimnames(x))[dim] <- gsub(pattern = pattern, replacement = order, names(dimnames(x))[dim], perl = TRUE)
     }
   }
   return(x)

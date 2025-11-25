@@ -20,7 +20,7 @@ the definition for auto-detection of temporal or spatial data.
 \examples{
 
 is.temporal(1991:1993)
-is.spatial(c("GLO","AFR"))
+is.spatial(c("GLO", "AFR"))
 
 }
 \author{

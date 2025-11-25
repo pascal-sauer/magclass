@@ -28,7 +28,8 @@
 #' write.report(maxample("pop"))
 #' @importFrom utils write.table
 #' @export
-write.report <- function(x, file = NULL, model = NULL, scenario = NULL, unit = NULL, ndigit = 4, # nolint
+write.report <- function(x, # nolint: object_name_linter.
+                         file = NULL, model = NULL, scenario = NULL, unit = NULL, ndigit = 4,
                          append = FALSE, skipempty = TRUE, extracols = NULL) {
 
   scenarioCall <- scenario
@@ -64,7 +65,7 @@ write.report <- function(x, file = NULL, model = NULL, scenario = NULL, unit = N
     if (append) {
       # check header for consistency
       header <- read.table(file, nrows = 1, sep = ";", stringsAsFactors = FALSE)
-      years1 <- as.numeric(header[sapply(header, is.numeric)]) # nolint
+      years1 <- as.numeric(header[vapply(header, is.numeric, logical(1))])
       years2 <- as.numeric(colnames(x)[!is.na(suppressWarnings(as.numeric(colnames(x))))])
       union <- sort(union(years1, years2))
       addycols <- function(data, years) {

@@ -19,7 +19,9 @@ sizeCheck <- function(dim) {
     stop("Numeric vector of dimension sizes expected.")
   }
 
-  if (is.null(getOption("magclass_sizeLimit"))) options(magclass_sizeLimit = 10^9) #nolint
+  if (is.null(getOption("magclass_sizeLimit"))) {
+    options(magclass_sizeLimit = 10^9) # nolint: undesirable_function_linter.
+  }
   # estimate new object size and check against size limit
   if (getOption("magclass_sizeLimit") > 0) {
     size <- prod(dim)

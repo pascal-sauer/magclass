@@ -19,18 +19,17 @@
 #' ani <- maxample("animal")
 #' complete_magpie(ani)
 #' @export
-
-complete_magpie <- function(x, fill = NA, dim = 3) { #nolint
+complete_magpie <- function(x, fill = NA, dim = 3) { # nolint: object_name_linter.
   .expand <- function(x) {
     grid <- expand.grid(x, stringsAsFactors = FALSE)
     return(sort(apply(grid, 1, paste, collapse = ".")))
   }
   .completeSize <- function(x, dimIn, dim) {
     .prod <- function(x) return(prod(vapply(x, length, integer(1))))
-     out <- dimIn
-     out[dim] <- vapply(x[dim], .prod, double(1))
-     out[out == 0] <- 1
-     return(out)
+    out <- dimIn
+    out[dim] <- vapply(x[dim], .prod, double(1))
+    out[out == 0] <- 1
+    return(out)
   }
   dim <- sort(unique(dim))
   if (any(!is.element(dim, seq_len(3)))) stop("Invalid dim selection (can only be set to 1, 2, or 3)!")
@@ -39,7 +38,7 @@ complete_magpie <- function(x, fill = NA, dim = 3) { #nolint
   if (all(dimOut == dim(x))) return(x)
   dimnamesOut <-  dimnames(x)
   for (i in dim) {
-      dimnamesOut[[i]] <- .expand(items[[i]])
+    dimnamesOut[[i]] <- .expand(items[[i]])
   }
   out <- new("magpie", array(data = fill, dim = dimOut, dimnames = dimnamesOut))
   dimnamesIn <- dimnames(x)

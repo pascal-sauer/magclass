@@ -1,12 +1,6 @@
-
 readMagpieMZ <- function(fileName, compressed) {
-
-  if (compressed) {
-    zz <- gzfile(fileName, "rb")
-  } else {
-    zz <- file(fileName, "rb")
-  }
-  on.exit(close(zz))
+  fileFunction <- if (compressed) gzfile else file
+  zz <- withr::local_connection(fileFunction(fileName, "rb"))
 
   newestFformatVersion <- 6
   fformatVersion <- readBin(zz, integer(), 1, size = 2)
@@ -23,7 +17,9 @@ readMagpieMZ <- function(fileName, compressed) {
     ncharSets <- readBin(zz, integer(), 1, size = 2)
     empty <- empty - 2
   }
-  if (fformatVersion < 6) readBin(zz, integer(), empty, size = 1)
+  if (fformatVersion < 6) {
+    readBin(zz, integer(), empty, size = 1)
+  }
 
   nyears    <- readBin(zz, integer(), 1, size = 2)
   yearList <- readBin(zz, integer(), nyears, size = 2)
@@ -51,10 +47,16 @@ readMagpieMZ <- function(fileName, compressed) {
 
   output <- array(readBin(zz, numeric(), nelem, size = 4), c(ncells, nyears, nelem / ncells / nyears))
   output[is.nan(output)] <- NA
-  if (length(cellnames) == 1) cellnames <- list(cellnames)
+  if (length(cellnames) == 1) {
+    cellnames <- list(cellnames)
+  }
   dimnames(output)[[1]] <- cellnames
-  if (yearList[1] > 0) dimnames(output)[[2]] <- paste("y", yearList, sep = "")
-  if (length(datanames) > 0) dimnames(output)[[3]] <- datanames
+  if (yearList[1] > 0) {
+    dimnames(output)[[2]] <- paste("y", yearList, sep = "")
+  }
+  if (length(datanames) > 0) {
+    dimnames(output)[[3]] <- datanames
+  }
 
   if (fformatVersion > 0 && ncharComment > 0) {
     attr(output, "comment") <- strsplit(readChar(zz, ncharComment, useBytes = useBytes), "\n",

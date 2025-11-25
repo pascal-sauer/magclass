@@ -14,8 +14,8 @@
 #' @examples
 #'
 #' # copy.magpie("bla.csv","blub.mz")
-#' @export copy.magpie
-copy.magpie <- function(input_file, output_file, round = NULL) { #nolint
+#' @export
+copy.magpie <- function(input_file, output_file, round = NULL) { # nolint: object_name_linter.
   inType  <- tail(strsplit(input_file, "\\.")[[1]], 1)
   outType <- tail(strsplit(output_file, "\\.")[[1]], 1)
   if (inType == outType && is.null(round)) {

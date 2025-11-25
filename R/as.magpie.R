@@ -65,7 +65,7 @@ setMethod("as.magpie",
             return(out)
           })
 
-setMethod("as.magpie", # nolint
+setMethod("as.magpie", # nolint: cyclocomp_linter.
   signature(x = "array"),
   function(x, spatial = NULL, temporal = NULL, unit = "unknown", ...) {
     storeAttributes <- copy.attributes(x, 0)
@@ -231,7 +231,7 @@ setMethod("as.magpie",
     if (is.null(datacol)) {
       isNumericlike <- function(x) {
         .tmp <- function(x) return(all(!is.na(suppressWarnings(as.numeric(x[!is.na(x)])))))
-        if (.isFALSE(.tmp(x[1]))) return(FALSE)
+        if (isFALSE(.tmp(x[1]))) return(FALSE)
         return(.tmp(x))
       }
       for (i in rev(seq_len(dim(x)[2]))) {

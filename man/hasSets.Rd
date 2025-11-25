@@ -20,7 +20,6 @@ Checks, whether set names have been set
 hasSets(maxample("pop"))
 hasSets(maxample("animal"))
 
-
 }
 \seealso{
 \code{\link{getCoords}}
