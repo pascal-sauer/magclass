@@ -1,8 +1,7 @@
-#' add_dimension
+#' addDim
 #'
 #' Function adds a name dimension as dimension number "dim" with the name "add"
 #' with an empty data column with the name "nm".
-#'
 #'
 #' @param x MAgPIE object which should be extended.
 #' @param dim The dimension number of the new dimension (e.g. 3.1)
@@ -14,10 +13,10 @@
 #' @examples
 #'
 #' a <- maxample("animal")
-#' str(add_dimension(a, dim = 3.2))
-#' str(add_dimension(a, dim = 2.3, nm = paste0("d", 1:3)))
+#' str(addDim(a, dim = 3.2))
+#' str(addDim(a, dim = 2.3, nm = paste0("d", 1:3)))
 #' @export
-add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: object_name_linter.
+addDim <- function(x, dim = 3.1, add = NULL, nm = "dummy") {
   x <- clean_magpie(x, what = "sets")
   if (is.null(add)) {
     # create non-existing variant of dimension name starting with "new"
@@ -55,6 +54,10 @@ add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: ob
   }
   return(x)
 }
+
+#' @inherit addDim
+#' @export
+add_dimension <- addDim # nolint: object_name_linter.
 
 add_dimension_old <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: object_name_linter.
   x <- clean_magpie(x, what = "sets")
