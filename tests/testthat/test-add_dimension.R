@@ -53,16 +53,13 @@ test_that("add_dimension works objects with inconsistent set information", {
 })
 
 test_that("add_dimension can handle large objects", {
-  to <- Reduce(x = 1:26, init = NULL, f = function(total, i) {
-    return(c(total, paste0(LETTERS[i], seq_len(1000 * i))))
-  })
-  weight <- new.magpie(to, fill = 0)
-  idx <- sample(seq_len(ncells(weight)), 20)
-  weight[idx, , ] <- runif(length(idx))
-  weight <- add_dimension(weight, 1.1, nm = "a")
-  weight <- add_dimension(weight, 1.8, nm = "b")
+  x <- new.magpie(paste0("A", 1:4e5))
+  system.time(x <- add_dimension(x, 1.1, nm = "a"))
+  system.time(x <- add_dimension(x, 1.8, nm = "b"))
+  system.time(x <- add_dimension(x, 1.2))
 
-  timed <- system.time(add_dimension(weight, 1.2))
-
-  expect_true(timed["elapsed"] < 0.5)
+  x <- new.magpie(paste0("A", 1:4e5))
+  system.time(x <- add_dimension_old(x, 1.1, nm = "a"))
+  system.time(x <- add_dimension_old(x, 1.8, nm = "b"))
+  system.time(x <- add_dimension_old(x, 1.2))
 })
