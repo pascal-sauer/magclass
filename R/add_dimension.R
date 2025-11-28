@@ -34,7 +34,7 @@ add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: ob
     nm <- rep(nm, each = dim(x)[maindim] / length(nm))
   }
   if (is.null(getItems(x, dim = maindim))) {
-    getItems(x, dim = maindim) <- nm
+    getItems(x, dim = maindim, raw = TRUE) <- nm
     getSets(x, fulldim = FALSE)[maindim] <- add
   } else if (subdim == 1) {
     getItems(x, dim = maindim, raw = TRUE) <- paste0(nm, ".", getItems(x, dim = maindim, full = TRUE))
