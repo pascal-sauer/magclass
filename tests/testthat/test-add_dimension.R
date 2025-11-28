@@ -59,10 +59,10 @@ test_that("add_dimension can handle large objects", {
   weight <- new.magpie(to, fill = 0)
   idx <- sample(seq_len(ncells(weight)), 20)
   weight[idx, , ] <- runif(length(idx))
-  weight <- add_dimension(weight, 1.1)
-  weight <- add_dimension(weight, 1.1)
+  weight <- add_dimension(weight, 1.1, nm = "a")
+  weight <- add_dimension(weight, 1.8, nm = "b")
 
-  timed <- system.time(ad <- add_dimension(weight, 1.2))
+  timed <- system.time(add_dimension(weight, 1.2))
 
   expect_true(timed["elapsed"] < 0.5)
 })
