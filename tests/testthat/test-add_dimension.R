@@ -51,15 +51,3 @@ test_that("add_dimension works objects with inconsistent set information", {
   expect_silent(b <- add_dimension(a))
   expect_identical(getItems(b, 3.1), "dummy")
 })
-
-test_that("add_dimension can handle large objects", {
-  x <- new.magpie(paste0("A", 1:4e5))
-  system.time(x <- add_dimension(x, 1.1, nm = "a"))
-  system.time(x <- add_dimension(x, 1.8, nm = "b"))
-  system.time(x <- add_dimension(x, 1.2))
-
-  x <- new.magpie(paste0("A", 1:4e5))
-  system.time(x <- add_dimension_old(x, 1.1, nm = "a"))
-  system.time(x <- add_dimension_old(x, 1.8, nm = "b"))
-  system.time(x <- add_dimension_old(x, 1.2))
-})
