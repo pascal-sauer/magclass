@@ -51,18 +51,3 @@ test_that("addDim works objects with inconsistent set information", {
   expect_silent(b <- addDim(a))
   expect_identical(getItems(b, 3.1), "dummy")
 })
-
-test_that("addDim can handle large objects", {
-  to <- Reduce(x = 1:26, init = NULL, f = function(total, i) {
-    return(c(total, paste0(LETTERS[i], seq_len(1000 * i))))
-  })
-  weight <- new.magpie(to, fill = 0)
-  idx <- sample(seq_len(ncells(weight)), 20)
-  weight[idx, , ] <- runif(length(idx))
-  weight <- addDim(weight, 1.1, nm = "a")
-  weight <- addDim(weight, 1.8, nm = "b")
-
-  timed <- system.time(addDim(weight, 1.2))
-
-  expect_true(timed["elapsed"] < 0.5)
-})

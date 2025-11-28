@@ -58,29 +58,3 @@ addDim <- function(x, dim = 3.1, add = NULL, nm = "dummy") {
 #' @inherit addDim
 #' @export
 add_dimension <- addDim # nolint: object_name_linter.
-
-add_dimension_old <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: object_name_linter.
-  x <- clean_magpie(x, what = "sets")
-  if (is.null(add)) {
-    # create non-existing variant of dimension name starting with "new"
-    sets <- getSets(x, fulldim = TRUE)
-    add <- tail(make.unique(c(sets, "new"), sep = ""), 1)
-  } else if (add %in% getSets(x, fulldim = TRUE)) {
-    stop("Dimension \"", add, "\" does already exist. Please use a different name!")
-  }
-  maindim <- floor(dim)
-  subdim  <- as.integer(sub("^.\\.", "", as.character(dim)))
-  if (length(nm) > 1) {
-    expand <- rep(seq_len(dim(x)[maindim]), length(nm))
-    x <- x[expand, dim = maindim]
-  }
-  items <- getItems(x, dim = maindim, split = TRUE, full = TRUE)
-  olddims <- seq_along(items)
-  items[[add]] <- rep(nm, each = dim(x)[maindim] / length(nm))
-  reorder <- c(olddims[olddims < subdim], length(items), olddims[olddims >= subdim])
-  items <- items[reorder]
-  items <- items[!vapply(items, is.null, logical(1))]
-  getItems(x, dim = maindim, raw = TRUE) <- apply(as.data.frame(items), 1, paste, collapse = ".")
-  getSets(x, fulldim = FALSE)[maindim] <- paste(names(items), collapse = ".")
-  return(x)
-}
