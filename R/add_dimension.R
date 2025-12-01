@@ -7,7 +7,13 @@
 #' @param x MAgPIE object which should be extended.
 #' @param dim The dimension number of the new dimension (e.g. 3.1)
 #' @param add The name of the new dimension
-#' @param nm The name of the first entry in dimension "add".
+#' @param nm One or more names of items in the new dimension. If more than one
+#' is given, behavior depends on the expand argument.
+#' @param expand If TRUE, each item in nm is added to each item
+#' already present, resulting in e.g. `c("A.d1", "A.d2", "B.d1", "B.d2")`.
+#' Otherwise, length of nm must equal the number of items already present and
+#' they are simply added, resulting in e.g. `c("A.d1", "B.d2")`.
+#'
 #' @return The extended MAgPIE object
 #' @author Jan Philipp Dietrich, Benjamin Bodirsky
 #' @seealso \code{\link{add_columns}},\code{\link{mbind}}
@@ -17,7 +23,7 @@
 #' str(add_dimension(a, dim = 3.2))
 #' str(add_dimension(a, dim = 2.3, nm = paste0("d", 1:3)))
 #' @export
-add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: object_name_linter.
+add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy", expand = TRUE) { # nolint: object_name_linter.
   x <- clean_magpie(x, what = "sets")
   if (is.null(add)) {
     # create non-existing variant of dimension name starting with "new"
@@ -29,9 +35,14 @@ add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: ob
   maindim <- floor(dim)
   subdim  <- as.integer(sub("^.\\.", "", as.character(dim)))
   if (length(nm) > 1) {
-    expand <- rep(seq_len(dim(x)[maindim]), length(nm))
-    x <- x[expand, dim = maindim]
-    nm <- rep(nm, each = dim(x)[maindim] / length(nm))
+    if (expand) {
+      expansion <- rep(seq_len(dim(x)[maindim]), length(nm))
+      x <- x[expansion, dim = maindim]
+      nm <- rep(nm, each = dim(x)[maindim] / length(nm))
+    } else if (length(nm) != dim(x)[maindim]) {
+      stop("length(nm) != number of items already present in x in dim ", maindim,
+           "; actual numbers: ", length(nm), "!=", dim(x)[maindim])
+    }
   }
   if (is.null(getItems(x, dim = maindim))) {
     getItems(x, dim = maindim, raw = TRUE) <- nm
