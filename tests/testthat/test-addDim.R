@@ -30,7 +30,7 @@ test_that("addDim works", {
                                                                         "y2000.d2.may.20",  "y2000.d2.june.20"),
                                                  type.species.color = c("animal.rabbit.black",
                                                                         "animal.rabbit.white"))))
-  expect_identical(addDim(aMini, dim = 2.2, nm = paste0("d", 1:2)), ref3)
+  expect_identical(addDim(aMini, dim = 2.2, item = paste0("d", 1:2)), ref3)
 
   a0 <- dimSums(a[, 1, 1], dim = 1)
   ref4 <- new("magpie", .Data = structure(190, .Dim = c(1L, 1L, 1L),
@@ -38,12 +38,15 @@ test_that("addDim works", {
                                                            type.species.color = "animal.rabbit.black")))
   expect_identical(addDim(a0, dim = 1), ref4)
   expect_identical(addDim(a0, dim = 1.2), ref4)
-  p <- maxample("pop")
-  expect_error(addDim(p, dim = 3.2, add = "scenario"), "Dimension .* does already exist")
 
+  p <- maxample("pop")
+  expect_error(addDim(p, dim = 3.2, dimName = "scenario"), "Dimension .* does already exist")
   expect_silent(p <- addDim(p, 3.1))
   expect_silent(p <- addDim(p, 3.2))
   expect_identical(getSets(p, fulldim = FALSE)[3], "new.new1.scenario")
+
+  p <- addDim(dimSums(p, 3), item = c("a.b", "c.d"))
+  expect_identical(getItems(p, 3), c("a.b", "c.d"))
 })
 
 test_that("addDim works objects with inconsistent set information", {

@@ -24,7 +24,7 @@ add_columns <- function(x, addnm = "new", dim = 3.1, fill = NA) { # nolint: obje
   x <- clean_magpie(x, what = "sets")
   if (length(addnm) == 0) return(x)
   dim <- dimCode(dim, x)
-  add <- addDim(dimSums(x, dim = dim), dim = dim, nm = addnm)
+  add <- addDim(dimSums(x, dim = dim), dim = dim, item = addnm)
   add[, , ] <- fill
   getSets(add) <- getSets(x)
   return(mbind(x, add))
