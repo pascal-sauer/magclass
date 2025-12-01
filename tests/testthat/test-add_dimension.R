@@ -49,6 +49,15 @@ test_that("add_dimension works", {
   expect_identical(getItems(p, 3), c("a.b", "c.d"))
 })
 
+test_that("add_dimension's expand argument works", {
+  p <- maxample("pop")
+  p <- add_dimension(dimSums(p, 3), nm = c("a.b", "c.d"))
+  p2 <- add_dimension(p, nm = c("e", "f"), expand = FALSE)
+  expect_identical(getItems(p2, 3), c("e.a.b", "f.c.d"))
+  p3 <- add_dimension(p, nm = c("e", "f"), expand = TRUE)
+  expect_identical(getItems(p3, 3), c("e.a.b", "e.c.d", "f.a.b", "f.c.d"))
+})
+
 test_that("add_dimension works objects with inconsistent set information", {
   a <- maxample("animal")
   expect_silent(b <- add_dimension(a))

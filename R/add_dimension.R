@@ -10,7 +10,7 @@
 #' @param nm One or more names of items in the new dimension. If more than one
 #' is given, behavior depends on the expand argument.
 #' @param expand If TRUE, each item in nm is added to each item
-#' already present, resulting in e.g. `c("A.d1", "A.d2", "B.d1", "B.d2")`.
+#' already present, resulting in e.g. `c("A.d1", "B.d1", "A.d2", "B.d2")`.
 #' Otherwise, length of nm must equal the number of items already present and
 #' they are simply added, resulting in e.g. `c("A.d1", "B.d2")`.
 #'
