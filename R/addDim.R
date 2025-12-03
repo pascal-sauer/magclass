@@ -1,12 +1,18 @@
 #' addDim
 #'
-#' Function adds a name dimension as dimension number "dim" with the name "dimName"
-#' with an empty data column with the name "item".
+#' Function adds a name dimension as dimension number "dim" with the name
+#' "dimName" with an empty data column with the name "item".
 #'
 #' @param x MAgPIE object which should be extended.
 #' @param dim The dimension number of the new dimension (e.g. 3.1)
 #' @param dimName The name of the new dimension
-#' @param item One or more names of items in the new dimension.
+#' @param item One or more names of items in the new dimension. If more than one
+#' is given, behavior depends on the expand argument.
+#' @param expand If TRUE, each item from the item argument is added to each item
+#' already present, resulting in e.g. `c("A.d1", "B.d1", "A.d2", "B.d2")`.
+#' Otherwise, length of item must equal the number of items already present and
+#' they are simply added, resulting in e.g. `c("A.d1", "B.d2")`.
+#'
 #' @return The extended MAgPIE object
 #' @author Jan Philipp Dietrich, Benjamin Bodirsky
 #' @seealso \code{\link{add_columns}},\code{\link{mbind}}
@@ -16,7 +22,7 @@
 #' str(addDim(a, dim = 3.2))
 #' str(addDim(a, dim = 2.3, item = paste0("d", 1:3)))
 #' @export
-addDim <- function(x, dim = 3.1, dimName = NULL, item = "dummy") {
+addDim <- function(x, dim = 3.1, dimName = NULL, item = "dummy", expand = TRUE) {
   x <- clean_magpie(x, what = "sets")
   if (is.null(dimName)) {
     # create non-existing variant of dimension name starting with "new"
@@ -28,9 +34,14 @@ addDim <- function(x, dim = 3.1, dimName = NULL, item = "dummy") {
   maindim <- floor(dim)
   subdim  <- as.integer(sub("^.\\.", "", as.character(dim)))
   if (length(item) > 1) {
-    expand <- rep(seq_len(dim(x)[maindim]), length(item))
-    x <- x[expand, dim = maindim]
-    item <- rep(item, each = dim(x)[maindim] / length(item))
+    if (expand) {
+      expansion <- rep(seq_len(dim(x)[maindim]), length(item))
+      x <- x[expansion, dim = maindim]
+      item <- rep(item, each = dim(x)[maindim] / length(item))
+    } else if (length(item) != dim(x)[maindim]) {
+      stop("length(item) != number of items already present in x in dim ", maindim,
+           "; actual numbers: ", length(item), "!=", dim(x)[maindim])
+    }
   }
   if (is.null(getItems(x, dim = maindim))) {
     getItems(x, dim = maindim, raw = TRUE) <- item
@@ -59,6 +70,6 @@ addDim <- function(x, dim = 3.1, dimName = NULL, item = "dummy") {
 #' @param add The name of the new dimension
 #' @param nm One or more names of items in the new dimension.
 #' @export
-add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: object_name_linter.
-  return(addDim(x = x, dim = dim, dimName = add, item = nm))
+add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy", expand = TRUE) { # nolint: object_name_linter.
+  return(addDim(x = x, dim = dim, dimName = add, item = nm, expand = expand))
 }

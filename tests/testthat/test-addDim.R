@@ -44,14 +44,23 @@ test_that("addDim works", {
   expect_silent(p <- addDim(p, 3.1))
   expect_silent(p <- addDim(p, 3.2))
   expect_identical(getSets(p, fulldim = FALSE)[3], "new.new1.scenario")
-  expect_silent(p <- add_dimension(p, 3.4))
+  expect_silent(p <- addDim(p, 3.4))
   expect_identical(getSets(p, fulldim = FALSE)[3], "new.new1.scenario.new2")
 
   p <- addDim(dimSums(p, 3), item = c("a.b", "c.d"))
   expect_identical(getItems(p, 3), c("a.b", "c.d"))
 })
 
-test_that("addDim works objects with inconsistent set information", {
+test_that("addDim's expand argument works", {
+  p <- maxample("pop")
+  p <- addDim(dimSums(p, 3), item = c("a.b", "c.d"))
+  p2 <- addDim(p, item = c("e", "f"), expand = FALSE)
+  expect_identical(getItems(p2, 3), c("e.a.b", "f.c.d"))
+  p3 <- addDim(p, item = c("e", "f"), expand = TRUE)
+  expect_identical(getItems(p3, 3), c("e.a.b", "e.c.d", "f.a.b", "f.c.d"))
+})
+
+test_that("addDim works for objects with inconsistent set information", {
   a <- maxample("animal")
   expect_silent(b <- addDim(a))
   expect_identical(getItems(b, 3.1), "dummy")
