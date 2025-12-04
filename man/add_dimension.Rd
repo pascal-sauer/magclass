@@ -32,5 +32,5 @@ str(add_dimension(a, dim = 2.3, nm = paste0("d", 1:3)))
 \code{\link{add_columns}},\code{\link{mbind}}
 }
 \author{
-Jan Philipp Dietrich, Benjamin Bodirsky
+Jan Philipp Dietrich, Benjamin Bodirsky, Pascal Sauer
 }

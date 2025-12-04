@@ -9,7 +9,7 @@
 #' @param add The name of the new dimension
 #' @param nm The name of the first entry in dimension "add".
 #' @return The extended MAgPIE object
-#' @author Jan Philipp Dietrich, Benjamin Bodirsky
+#' @author Jan Philipp Dietrich, Benjamin Bodirsky, Pascal Sauer
 #' @seealso \code{\link{add_columns}},\code{\link{mbind}}
 #' @examples
 #'
