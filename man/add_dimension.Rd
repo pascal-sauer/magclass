@@ -4,7 +4,7 @@
 \alias{add_dimension}
 \title{add_dimension}
 \usage{
-add_dimension(x, dim = 3.1, add = NULL, nm = "dummy")
+add_dimension(x, dim = 3.1, add = NULL, nm = "dummy", expand = TRUE)
 }
 \arguments{
 \item{x}{MAgPIE object which should be extended.}
@@ -13,7 +13,13 @@ add_dimension(x, dim = 3.1, add = NULL, nm = "dummy")
 
 \item{add}{The name of the new dimension}
 
-\item{nm}{The name of the first entry in dimension "add".}
+\item{nm}{One or more names of items in the new dimension. If more than one
+is given, behavior depends on the expand argument.}
+
+\item{expand}{If TRUE, each item in nm is added to each item
+already present, resulting in e.g. `c("A.d1", "B.d1", "A.d2", "B.d2")`.
+Otherwise, length of nm must equal the number of items already present and
+they are simply added, resulting in e.g. `c("A.d1", "B.d2")`.}
 }
 \value{
 The extended MAgPIE object
