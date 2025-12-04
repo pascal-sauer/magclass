@@ -9,7 +9,7 @@
 #' @param add The name of the new dimension
 #' @param nm The name of the first entry in dimension "add".
 #' @return The extended MAgPIE object
-#' @author Jan Philipp Dietrich, Benjamin Bodirsky
+#' @author Jan Philipp Dietrich, Benjamin Bodirsky, Pascal Sauer
 #' @seealso \code{\link{add_columns}},\code{\link{mbind}}
 #' @examples
 #'
@@ -31,14 +31,27 @@ add_dimension <- function(x, dim = 3.1, add = NULL, nm = "dummy") { # nolint: ob
   if (length(nm) > 1) {
     expand <- rep(seq_len(dim(x)[maindim]), length(nm))
     x <- x[expand, dim = maindim]
+    nm <- rep(nm, each = dim(x)[maindim] / length(nm))
   }
-  items <- getItems(x, dim = maindim, split = TRUE, full = TRUE)
-  olddims <- seq_along(items)
-  items[[add]] <- rep(nm, each = dim(x)[maindim] / length(nm))
-  reorder <- c(olddims[olddims < subdim], length(items), olddims[olddims >= subdim])
-  items <- items[reorder]
-  items <- items[!vapply(items, is.null, logical(1))]
-  getItems(x, dim = maindim, raw = TRUE) <- apply(as.data.frame(items), 1, paste, collapse = ".")
-  getSets(x, fulldim = FALSE)[maindim] <- paste(names(items), collapse = ".")
+  if (is.null(getItems(x, dim = maindim))) {
+    getItems(x, dim = maindim, raw = TRUE) <- nm
+    getSets(x, fulldim = FALSE)[maindim] <- add
+  } else if (subdim == 1) {
+    getItems(x, dim = maindim, raw = TRUE) <- paste0(nm, ".", getItems(x, dim = maindim, full = TRUE))
+    getSets(x, fulldim = FALSE)[maindim] <- paste0(add, ".", getSets(x, fulldim = FALSE)[maindim])
+  } else if (subdim > ndim(x, maindim)) {
+    getItems(x, dim = maindim, raw = TRUE) <- paste0(getItems(x, dim = maindim, full = TRUE), ".", nm)
+    getSets(x, fulldim = FALSE)[maindim] <- paste0(getSets(x, fulldim = FALSE)[maindim], ".", add)
+  } else {
+    # this else branch can solve any case, the previous 3 are just faster implementations for common special cases
+    items <- getItems(x, dim = maindim, split = TRUE, full = TRUE)
+    before <- seq_len(subdim - 1)
+    after <- setdiff(seq_along(items), before)
+    items <- c(items[before], list(nm), items[after])
+    names(items)[subdim] <- add
+    items <- Filter(Negate(is.null), items)
+    getItems(x, dim = maindim, raw = TRUE) <- do.call(function(...) paste(..., sep = "."), items)
+    getSets(x, fulldim = FALSE)[maindim] <- paste(names(items), collapse = ".")
+  }
   return(x)
 }
